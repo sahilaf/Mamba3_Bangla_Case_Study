@@ -1,0 +1,15 @@
+{
+  "arch": "hybrid",
+  "vocab_size": 32768,
+  "d_model": 512,
+  "n_layer": 15,
+  "attn_layer_idx": [3, 6, 9, 12],
+  "n_head": 8,
+  "rope_theta": 10000.0,
+  "d_state": 128,
+  "expand": 2,
+  "headdim": 64,
+  "is_mimo": false,
+  "seq_len": 1024,
+  "tie_embeddings": true
+}

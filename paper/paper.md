@@ -17,17 +17,20 @@ entirely on English. We ask whether they transfer to a morphologically rich, low
 setting by training parameter- and token-matched Transformer, Mamba-3, and hybrid language
 models (24.5M non-embedding parameters, 1B tokens) from scratch on Bangla, and evaluating
 them on a new suite of 4,790 native-speaker-reviewed minimal pairs targeting Bangla
-subject–verb person and honorific-register agreement. We find a dissociation that holds
-across two seeds: **the Transformer's agreement accuracy degrades as the subject–verb
-distance grows, while Mamba-3's does not**, yet Mamba-3 attains *lower* perplexity. Once a
-rare-register frequency artifact is set aside, the two models are close on subject–verb and
-attraction agreement; the Transformer's clear local advantage is confined to
-honorific-register agreement, while Mamba-3 is best on the hardest, cross-sentence
-(pro-drop) condition. A hybrid (Mamba-3 backbone with two attention layers) obtains the best
+subject–verb person and honorific-register agreement. We assess every comparison with Wilson
+95% confidence intervals (and paired McNemar tests in the released analysis). We find a
+dissociation that replicates across two seeds: **the Transformer's agreement accuracy
+degrades significantly as the subject–verb distance grows, while Mamba-3's does not**, yet
+Mamba-3 attains *lower* perplexity. Once a rare-register frequency artifact is set aside, the
+two models are statistically close on subject–verb and attraction agreement; the
+Transformer's one robust local advantage is honorific-register agreement (non-overlapping
+CIs), while on the hardest, cross-sentence (pro-drop) condition the models do not differ
+significantly. A hybrid (Mamba-3 backbone with two attention layers) obtains the best
 perplexity and recovers much of the honorific gap, but does not uniformly dominate and shows
 higher cross-seed variance. Perplexity does not predict morphosyntactic competence here, and
-fixed-size recurrent state trades local precision for robustness to distance. We release the
-code, the probe suite, and all six checkpoints.
+our results are consistent with fixed-size recurrent state trading local register precision
+for robustness to distance. We release the code, the probe suite, all six checkpoints, and
+scripts for extending to more seeds and attention-placement ablations.
 
 ## 1. Introduction
 
@@ -154,6 +157,13 @@ report accuracy overall and by condition; the SVA distance bins are the key anal
 same scorer runs on our checkpoints and on any Hugging Face causal LM, and on MultiBLiMP's
 Bengali pairs as an external check.
 
+**Significance.** We report **Wilson 95% confidence intervals** on every accuracy, computed
+over the pooled two-seed trial count (finite-probe-set uncertainty); we call a difference
+significant when the intervals do not overlap. The released analysis (`paper/stats.py`) also
+runs **paired McNemar tests** on per-pair correctness dumps where finer, item-level
+comparison is wanted. Seed-to-seed spread (initialization uncertainty) is reported separately
+in Appendix A.
+
 ## 4. Results
 
 All numbers are the mean of two seeds; bands/error bars show the seed range.
@@ -170,12 +180,13 @@ family** — the opposite of the honorific-agreement result below.
 
 ![SVA accuracy vs. subject–verb distance](figures/fig1_distance.png)
 
-The Transformer starts highest but **degrades monotonically as the subject–verb distance
-grows** (90.9% → 86.4%). Mamba-3 starts lower but is **flat-to-rising** (79.1% → 80.2%,
-peaking at medium distance). The direction holds in *both* seeds (Transformer −2.9 and −6.2
-points none→long; Mamba-3 +1.4 and +0.8). Attention's advantage is a *local* one that erodes
-with distance; the SSM's fixed recurrent state shows no such decay. The hybrid lies between
-the two and is less stable across distance than pure Mamba-3.
+The Transformer starts highest but **degrades as the subject–verb distance grows**, from
+90.9% (none; 95% CI [88.5, 92.9]) to 86.3% (long; [85.0, 87.6]) — a **significant** drop
+(non-overlapping intervals), replicated in both seeds (−2.9 and −6.2 points none→long).
+Mamba-3 is **flat**: 79.1% (none; [75.8, 82.0]) to 80.2% (long; [78.6, 81.7]) — the intervals
+overlap, i.e. no significant change with distance. Attention's advantage is thus a *local*
+one that erodes with distance; the SSM's fixed recurrent state shows no such decay. The
+hybrid lies between the two and is less stable across distance than pure Mamba-3.
 
 ### 4.3 Agreement by condition
 
@@ -187,16 +198,19 @@ the two and is less stable across distance than pure Mamba-3.
 | Mamba-3 | 81.2 | 87.4 | 85.9 | 67.1 | **70.6** |
 | Hybrid | 86.3 | — | 82.4 | 74.1 | 67.2 |
 
-Two points matter here. First, **most of the raw SVA gap is a single rare-register cell**
-(§4.4): excluding 2nd-person-intimate, the Transformer–Mamba-3 SVA gap narrows from 7.3 to
-**1.9 points**, and attraction is already within 0.7 points. On general subject–verb
-agreement, the two architectures are close. Second, the Transformer's *clear* local
-advantage is **honorific register** (78.8 vs. 67.1) — Mamba-3's compressed state loses the
-register distinction more often. Conversely, on **discourse** — register agreement across a
-sentence boundary with a dropped subject, the longest-range and hardest probe — **Mamba-3 is
-best and most stable** (70.6%). The hybrid recovers much of the honorific gap relative to
-Mamba-3 but surpasses the Transformer on no local condition, and shows the highest cross-seed
-variance on honorific and discourse.
+Wilson 95% CIs (Appendix A) make the picture precise. First, **most of the raw SVA gap is a
+single rare-register cell** (§4.4): excluding 2nd-person-intimate, the Transformer–Mamba-3
+SVA gap narrows from 7.3 to **1.9 points**, and on **attraction** the intervals overlap
+(Transformer [85.2, 87.9] vs. Mamba-3 [84.4, 87.2]) — no significant difference. On general
+subject–verb agreement the two architectures are close. Second, the Transformer's one
+**robust** local advantage is **honorific register**: [74.6, 82.4] vs. Mamba-3 [62.5, 71.5],
+non-overlapping — a significant gap. Mamba-3's compressed state loses the register
+distinction more often. Third, on **discourse** — register agreement across a sentence
+boundary with a dropped subject, the longest-range and hardest probe — Mamba-3 has the best
+mean (70.6%) but the intervals overlap the Transformer's ([63.5, 76.7] vs. [60.1, 73.7]), so
+we report this as **suggestive, not significant**. The hybrid recovers much of the honorific
+gap relative to Mamba-3 but surpasses the Transformer on no local condition, and shows the
+highest cross-seed variance on honorific and discourse.
 
 ### 4.4 The 2nd-person-intimate artifact
 
@@ -207,6 +221,25 @@ means the model systematically prefers the more frequent (wrong) form — a
 frequency/tokenization effect, not a failure of state tracking. We therefore report SVA both
 with and without this cell (§4.3) and exclude it from Figure 1.
 
+### 4.5 Error analysis
+
+Two patterns recur across all three models (per-tense and per-person breakdowns in the
+released `results/`).
+
+**Tense.** Past-tense agreement is consistently the hardest, below present and future for
+every model on SVA (e.g. Transformer 84.1% past vs. 91.2% present vs. 95.0% future) and on
+honorific. Bangla simple-past forms are shorter and more syncretic across register than
+future forms (which carry an explicit -ব-/-বেন marker), giving the model a weaker surface cue
+— an effect that is *architecture-independent* and thus a property of the phenomenon, not of
+attention vs. recurrence.
+
+**Register direction is asymmetric.** On the honorific probe, all models agree almost
+perfectly with overtly honorific subjects (তিনি/উনি; ~100%) but err on *ordinary* 3rd-person
+subjects (p3-ord: 59–76%), i.e. they **over-apply honorific agreement** rather than fail to
+apply it. Mamba-3 shows the largest such asymmetry, which is what drives its honorific deficit
+(§4.3): its compressed state more often defaults to the (frequent, respectful) honorific verb
+form. This is a specific, testable failure mode, not a diffuse accuracy gap.
+
 ## 5. Discussion
 
 Three findings cut against a naive reading of "Mamba-3 tracks state better, so it should win
@@ -215,10 +248,12 @@ agreement":
 1. **Perplexity dissociates from morphosyntactic competence.** Mamba-3 models Bangla text
    better (lower perplexity) yet is markedly worse at honorific-register agreement.
    Perplexity alone would have hidden this.
-2. **Fixed-size state trades local precision for distance robustness.** Attention pays for
-   direct access to the subject with a decay over distance; the SSM's compressed state is
-   less precise on register locally but does not decay, and is best across a sentence
-   boundary.
+2. **Fixed-size state appears to trade local precision for distance robustness.** Attention
+   pays for direct access to the subject with a decay over distance; the SSM's compressed
+   state is less precise on register locally but does not decay. This is an observed
+   association under matched conditions, not a demonstrated mechanism — a controlled
+   intervention on state size would be needed to establish causation, which we leave to
+   future work.
 3. **The "local" advantage of attention is narrower than it first appears.** Once the rare
    p2-intimate artifact is removed, the two models are close on subject–verb and attraction
    agreement; the Transformer's robust edge is specifically honorific register.
@@ -230,14 +265,26 @@ place for morphologically rich languages is an open question.
 
 ## 6. Limitations
 
-- **Scale.** One model size (24.5M non-embedding), one token budget (1B). Trends may not
-  hold at scale; this is a pilot, not a scaling study.
-- **Seeds.** Two seeds per model. Large effects (the distance trend, the honorific gap) are
-  robust; smaller ones (the discourse ranking, the hybrid on honorific) have 3–6-point
-  cross-seed spread and are reported as suggestive.
-- **Probe construction.** Templated from a finite hand-written lexicon; native-speaker
-  reviewed but not sampled from natural corpora. The honorific and discourse sets are small
-  (210 and 90 pairs).
+We frame this explicitly as a **controlled pilot** for a multilingual/low-resource venue,
+not a scaling study or a claim about a single "better" architecture.
+
+- **Scale and breadth.** One model size (24.5M non-embedding), one token budget (1B), one
+  language. Mamba-3 targets much larger scales; whether the distance dissociation persists at
+  100M–1B+ parameters, and whether it generalizes to other agreement-marking South Asian
+  languages (Hindi, Urdu, Marathi, Tamil), is open. Our released pipeline is language- and
+  size-agnostic to make these extensions cheap.
+- **Seeds.** Two seeds for the reported numbers; the significance claims rest on Wilson CIs
+  over the probe set, not on seed count alone. We release scripts to extend to five seeds
+  (notebook cell 20); the direction of every significant effect replicates across the two
+  seeds already run.
+- **Probe construction.** Templated from a finite hand-written lexicon (10 verbs, 6
+  person/register cells, reusable frames), native-speaker reviewed but not sampled from
+  natural corpora; the honorific and discourse sets are small (210 and 90 pairs). Templated
+  minimal pairs trade naturalness for control — the standard BLiMP trade-off.
+- **State tracking beyond agreement.** We probe agreement specifically; coreference,
+  long-context retrieval, and narrative memory are not tested and may behave differently.
+- **Hybrid design.** We use two attention layers; a placement/count ablation (1/2/4 layers)
+  is provided as a script (cell 21) but not yet run at the time of writing.
 - **SISO only.** We do not evaluate Mamba-3's MIMO variant (its kernels are unavailable in
   the released package build we used).
 
@@ -254,11 +301,11 @@ from `paper/results.json` with no GPU or data access. Data sampling is determini
 In a controlled, iso-parameter, iso-token Bangla comparison, Mamba-3's fixed recurrent state
 does not uniformly help or hurt agreement: it is *worse* at honorific register and *more
 robust* to distance and cross-sentence dependencies, while achieving lower perplexity than a
-matched Transformer. On general subject–verb agreement the two are close once a rare-register
-artifact is set aside. A sparse hybrid recovers honorific accuracy and the best perplexity
-without strictly dominating. The result is new for Bangla and, we believe, for South Asian
-morphologically rich languages generally; we release the suite, code, and checkpoints to
-support replication and extension.
+matched Transformer. On general subject–verb agreement the two are statistically close once a
+rare-register artifact is set aside. A sparse hybrid recovers honorific accuracy and the best
+perplexity without strictly dominating. The result is new for Bangla and, we believe, for
+South Asian morphologically rich languages generally; we release the suite, code,
+checkpoints, and significance/ablation scripts to support replication and extension.
 
 ## Ethics and broader impact
 
@@ -355,3 +402,27 @@ SVA accuracy by distance (mean of two seeds), %:
 2nd-person-intimate (p2int) SVA accuracy, per seed: Transformer 79.7 / 82.7; Mamba-3
 12.0 / 25.3; Hybrid 49.3 / 74.7. Full per-condition, per-seed breakdowns are in the released
 `results/` directory.
+
+### Appendix B. Data, tokenizer, and compute
+
+| Item | Value |
+|---|---|
+| Corpus | FineWeb-2 `ben_Beng` (Penedo et al., 2025); train 1.0B tokens, held-out test split |
+| Tokenizer | SentencePiece BPE, 32,768 vocab, byte-fallback, trained on a 400k-doc Bangla sample |
+| Sequence length | 1,024 tokens |
+| Non-embedding params | Transformer 24.52M · Mamba-3 24.50M · Hybrid 24.85M (matched within 0.1–1.3%) |
+| Total params (tied 32k emb.) | ≈41–42M |
+| Hardware | 1× NVIDIA A100-80GB (Google Colab) |
+| Throughput (bf16, seq 1024) | Transformer 226k tok/s · Mamba-3 172k tok/s |
+| Compute per run | ≈1.2–1.8 A100-hours (1B tokens); ≈17 A100-hours for all six main runs |
+| Eval | perplexity on 20M held-out tokens; 4,790 probe pairs per checkpoint |
+
+### Appendix C. Significance methodology
+
+Accuracies carry Wilson score 95% confidence intervals computed over the pooled two-seed
+trial count (finite-probe uncertainty); a difference is called significant when intervals do
+not overlap. `paper/stats.py` reproduces every interval from `paper/results.json` with no GPU
+or data, and additionally computes paired McNemar tests (normal approximation with continuity
+correction) from per-pair correctness dumps (`--dump_per_pair`) when item-level comparison is
+desired. Seed spread is reported separately (Appendix A) as it reflects a different
+(initialization) source of variance.

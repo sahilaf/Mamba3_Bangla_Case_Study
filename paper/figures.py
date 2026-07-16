@@ -16,6 +16,8 @@ import matplotlib
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 
+from stats import N, pooled_ci  # Wilson-CI helpers, same directory
+
 HERE = Path(__file__).resolve().parent
 RES = json.loads((HERE / "results.json").read_text(encoding="utf-8"))
 OUT = HERE / "figures"
@@ -59,10 +61,10 @@ def fig_distance():
     fig, ax = plt.subplots(figsize=(5.2, 3.6))
     for m in MODELS:
         d = RES["sva_by_distance"][m]
-        s1, s2 = d["s1"], d["s2"]
-        mean = [(_mean([s1[i], s2[i]])) * 100 for i in range(len(order))]
-        lo = [min(s1[i], s2[i]) * 100 for i in range(len(order))]
-        hi = [max(s1[i], s2[i]) * 100 for i in range(len(order))]
+        mean, lo, hi = [], [], []
+        for i, b in enumerate(order):
+            mn, l, h = pooled_ci([d["s1"][i], d["s2"][i]], N[f"sva_{b}"])
+            mean.append(mn * 100); lo.append(l * 100); hi.append(h * 100)
         ax.fill_between(x, lo, hi, color=COLOR[m], alpha=0.15, linewidth=0)
         ax.plot(x, mean, color=COLOR[m], marker=MARKER[m], markersize=6,
                 linewidth=2, label=LABEL[m])
@@ -79,16 +81,16 @@ def fig_distance():
 def fig_probes():
     """Fig 2 — accuracy by probe type, grouped bars with seed range as error."""
     probes = ["sva_overall", "attraction_overall", "honorific_overall", "discourse_overall"]
+    conds = ["sva", "attraction", "honorific", "discourse"]
     names = ["SVA", "Attraction", "Honorific", "Discourse"]
     fig, ax = plt.subplots(figsize=(6.2, 3.6))
     w = 0.26
     for j, m in enumerate(MODELS):
         means, errs = [], []
-        for p in probes:
-            vals = RES[p][m]
-            mn = _mean(vals) * 100
-            means.append(mn)
-            errs.append((max(vals) - min(vals)) / 2 * 100)
+        for p, c in zip(probes, conds):
+            mn, lo, hi = pooled_ci(RES[p][m], N[c])  # Wilson 95% CI half-width
+            means.append(mn * 100)
+            errs.append((hi - lo) / 2 * 100)
         xs = [i + (j - 1) * w for i in range(len(probes))]
         ax.bar(xs, means, width=w, color=COLOR[m], label=LABEL[m],
                hatch=HATCH[m], edgecolor="white", linewidth=0.6,

@@ -93,6 +93,10 @@ def main():
     ap.add_argument("--sp_model")
     # external
     ap.add_argument("--hf_model")
+    # per-pair dump enables paired McNemar tests (paper/stats.py)
+    ap.add_argument("--dump_per_pair", default=None,
+                    help="dir to write <tag>_<probe>.csv (id,correct) for significance testing")
+    ap.add_argument("--dump_tag", default="model", help="tag prefix for per-pair dumps")
     args = ap.parse_args()
 
     device = "cuda" if torch.cuda.is_available() else "cpu"
@@ -105,20 +109,32 @@ def main():
         scorer = OurScorer(args.config, args.ckpt, args.sp_model, device)
         model_name = args.ckpt
 
+    if args.dump_per_pair:
+        Path(args.dump_per_pair).mkdir(parents=True, exist_ok=True)
+
     all_results = {}
     for tsv in args.tsv:
         rows = load_pairs(tsv)
         n_correct = 0
         by = {k: defaultdict(lambda: [0, 0]) for k in ("distance", "tense", "subj_person")}
+        per_pair = []
         for r in rows:
             good = scorer.logprob(r["sen"])
             bad = scorer.logprob(r["wrong_sen"])
             ok = good > bad
             n_correct += ok
+            per_pair.append((r.get("id", ""), int(ok)))
             for k in by:
                 if r.get(k):
                     by[k][r[k]][0] += ok
                     by[k][r[k]][1] += 1
+        if args.dump_per_pair:
+            probe = Path(tsv).stem
+            with open(Path(args.dump_per_pair) / f"{args.dump_tag}_{probe}.csv",
+                      "w", encoding="utf-8", newline="") as f:
+                w = csv.writer(f)
+                w.writerow(["id", "correct"])
+                w.writerows(per_pair)
         res = {
             "n": len(rows),
             "accuracy": round(n_correct / len(rows), 4),
