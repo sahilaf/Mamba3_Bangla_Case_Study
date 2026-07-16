@@ -11,121 +11,148 @@ Checkpoints: <https://huggingface.co/sahilfarib/mamba3-bangla-case-study>
 
 ## Abstract
 
-State-space models such as Mamba-3 claim improved state-tracking over attention while
-running in sub-quadratic time, but these claims are validated almost entirely on
-English. We ask whether they transfer to a morphologically rich, low-resource setting
-by training parameter- and token-matched Transformer, Mamba-3, and hybrid language
-models (24.5M non-embedding parameters, 1B tokens) from scratch on Bangla, and
-evaluating them on a new suite of 4,790 native-speaker-reviewed minimal pairs targeting
-Bangla subject–verb person/honorific agreement. We find a clean dissociation that holds
+State-space models such as Mamba-3 (Lahoti et al., 2026) claim improved state-tracking
+over attention while running in sub-quadratic time, but these claims are validated almost
+entirely on English. We ask whether they transfer to a morphologically rich, low-resource
+setting by training parameter- and token-matched Transformer, Mamba-3, and hybrid language
+models (24.5M non-embedding parameters, 1B tokens) from scratch on Bangla, and evaluating
+them on a new suite of 4,790 native-speaker-reviewed minimal pairs targeting Bangla
+subject–verb person and honorific-register agreement. We find a dissociation that holds
 across two seeds: **the Transformer's agreement accuracy degrades as the subject–verb
-distance grows, while Mamba-3's does not** — yet the Transformer retains higher absolute
-accuracy on local agreement, and Mamba-3 attains lower perplexity. A hybrid (Mamba-3
-backbone with two attention layers) obtains the best perplexity and recovers much of the
-local-agreement gap, but does not uniformly dominate. Perplexity does not predict
-morphosyntactic competence in this setting, and fixed-size recurrent state trades local
-precision for robustness to distance. We release the code, the probe suite, and all six
-checkpoints.
+distance grows, while Mamba-3's does not**, yet Mamba-3 attains *lower* perplexity. Once a
+rare-register frequency artifact is set aside, the two models are close on subject–verb and
+attraction agreement; the Transformer's clear local advantage is confined to
+honorific-register agreement, while Mamba-3 is best on the hardest, cross-sentence
+(pro-drop) condition. A hybrid (Mamba-3 backbone with two attention layers) obtains the best
+perplexity and recovers much of the honorific gap, but does not uniformly dominate and shows
+higher cross-seed variance. Perplexity does not predict morphosyntactic competence here, and
+fixed-size recurrent state trades local precision for robustness to distance. We release the
+code, the probe suite, and all six checkpoints.
 
 ## 1. Introduction
 
-Sub-quadratic sequence models have re-emerged as credible alternatives to the
-Transformer. Mamba-3 (Lahoti et al., ICLR 2026) argues that a more expressive
-recurrence, complex/rotary state updates, and multi-input–multi-output projections
-improve *state tracking* — the ability to maintain and update structured information
-across a sequence. Its evaluations, like those of most architecture papers, are
+Sub-quadratic sequence models have re-emerged as credible alternatives to the Transformer.
+Mamba (Gu and Dao, 2024) and its successors argue that a selective state-space recurrence
+can match attention on language modeling at lower cost; Mamba-3 (Lahoti et al., 2026)
+further claims improved *state tracking* — maintaining and updating structured information
+across a sequence — via a more expressive recurrence, complex/rotary state updates, and
+multi-input–multi-output projections. Like most architecture papers, its evaluations are
 English-centric.
 
-Bangla (Bengali, ~285M speakers) offers a sharp test. Its finite verbs agree with the
-subject in **person and honorific register** — not number — and this agreement can hold
-across long spans and even across a dropped (pro-drop) subject in a following sentence.
-Whether a fixed-size compressed state helps track such dependencies, or whether it hurts
-when training data is already scarce, is untested for Bangla or, to our knowledge, any
-South Asian language.
+Bangla (Bengali; over 230 million speakers) offers a sharp test. Its finite verbs agree
+with the subject in **person and honorific register** — not number — and this agreement can
+hold across long spans and even across a dropped (pro-drop) subject in a following sentence.
+Whether a fixed-size compressed state helps track such dependencies, or hurts when training
+data is already scarce, is untested for Bangla or, to our knowledge, any South Asian
+language.
 
-We run a deliberately small, controlled comparison — the same methodology the Mamba-2
-and Mamba-3 papers use to validate their own claims — asking:
+We run a deliberately small, controlled comparison — the methodology the Mamba and Mamba-2
+papers use to validate their own claims (Gu and Dao, 2024; Dao and Gu, 2024) — asking:
 
 > Does Mamba-3's state-tracking advantage translate into better Bangla subject–verb
 > agreement than a parameter- and token-matched Transformer, and does interleaving a few
 > attention layers into a Mamba-3 backbone combine their strengths?
 
-Our contributions:
+**Contributions.**
 1. A **controlled three-way comparison** (Transformer, Mamba-3, hybrid) at iso-parameter,
-   iso-token scale on Bangla, with two seeds each.
+   iso-token scale on Bangla, two seeds each, from scratch.
 2. A **reusable probe suite** of 4,790 native-speaker-reviewed Bangla minimal pairs for
-   person/honorific agreement, distance-binned, including agreement attraction and
+   person and honorific agreement — distance-binned, and including agreement attraction and
    cross-sentence pro-drop conditions with no English analogue.
-3. A replicated **dissociation**: attention degrades with distance, Mamba-3 does not;
-   attention wins local agreement, Mamba-3 wins perplexity and the hardest cross-sentence
-   probe.
+3. A replicated **dissociation**: attention degrades with distance while Mamba-3 does not;
+   Mamba-3 leads perplexity and cross-sentence agreement; the Transformer's local edge is
+   concentrated in honorific register, not subject–verb agreement broadly.
 
 ## 2. Related work
 
-**Targeted syntactic evaluation.** Minimal-pair benchmarks (Linzen et al., 2016; BLiMP,
-Warstadt et al., 2020) score whether a model assigns higher probability to a grammatical
-sentence than to a minimally different ungrammatical one. MultiBLiMP 1.0 (Jumelet et al.,
-TACL 2026) extends this to 101 languages via Universal Dependencies, but its automatic
-pipeline yields only 21 Bengali pairs — too few to analyse by condition, and none
-covering honorific register or cross-sentence agreement. Our hand-built suite fills that
-gap.
+**Targeted syntactic evaluation.** Minimal-pair benchmarks score whether a model assigns
+higher probability to a grammatical sentence than to a minimally different ungrammatical one
+(Linzen et al., 2016; Warstadt et al., 2020). MultiBLiMP 1.0 (Jumelet et al., 2026) extends
+this to 101 languages via Universal Dependencies and UniMorph, but its fully automatic
+pipeline yields only 21 Bengali pairs — too few to analyse by condition, and none covering
+honorific register or cross-sentence agreement. Our hand-built, native-speaker-reviewed
+suite fills that gap and is format-compatible with MultiBLiMP.
 
-**State-space and hybrid models.** Mamba (Gu & Dao, 2023), Mamba-2, and Mamba-3 (Lahoti
-et al., 2026) develop selective SSMs with strong English language-modeling results.
-Hybrids that interleave a small number of attention layers into an SSM backbone (Samba;
-Jamba; Zamba) are now standard for recovering in-context precision cheaply; we adopt this
-recipe for our third model.
+**State-space and hybrid models.** Selective SSMs — Mamba (Gu and Dao, 2024), Mamba-2 (Dao
+and Gu, 2024), and Mamba-3 (Lahoti et al., 2026) — achieve strong English language-modeling
+results at sub-quadratic cost. Hybrids that interleave a small number of attention layers
+into an SSM backbone (Samba, Ren et al., 2025; Jamba, Lieber et al., 2024) are now a
+standard recipe for recovering in-context precision cheaply; we adopt it for our third
+model.
 
-**Low-resource Bangla LMs.** Prior Bangla work (BanglaBERT; TituLM; BanglaMixLoRA)
-adapts existing architectures or applies existing adaptation techniques. We instead test
-a falsifiable *architectural* hypothesis under matched compute — a question that is new
-regardless of which model wins.
+**Low-resource Bangla LMs.** Prior Bangla work adapts existing architectures or adaptation
+techniques — e.g. BanglaBERT (Bhattacharjee et al., 2022) pretrains an ELECTRA-style encoder
+on a 27.5 GB crawl. We instead test a falsifiable *architectural* hypothesis under matched
+compute; the question is new regardless of which model wins.
 
 ## 3. Method
 
-### 3.1 Models
+### 3.1 Architectures
 
 All three models are decoder-only causal LMs matched on **non-embedding** parameters
-(~24.5M; embeddings are identical across models and excluded from the matching criterion)
-and share a 32k SentencePiece BPE vocabulary with tied input/output embeddings.
+(~24.5M; embeddings are identical across models and excluded from the matching criterion,
+which we verify to within 0.1%). Each is a pre-norm residual tower using RMSNorm (Zhang and
+Sennrich, 2019) with tied input/output embeddings; the models differ *only* in the per-layer
+token mixer:
 
-- **Transformer** — Llama-style: RoPE, SwiGLU MLP, RMSNorm, full multi-head attention.
-- **Mamba-3** — the official `Mamba3` block (state-spaces/mamba) stacked in a pre-norm
-  RMSNorm residual tower, SISO (single-input–single-output) variant.
-- **Hybrid** — the Mamba-3 tower with self-attention (RoPE) substituted at 2 of 15 layers
+- **Transformer** — Llama-style (Touvron et al., 2023): full multi-head self-attention with
+  rotary position embeddings (Su et al., 2024) and a SwiGLU MLP (Shazeer, 2020).
+- **Mamba-3** — the official `Mamba3` block (Lahoti et al., 2026; state-spaces/mamba),
+  single-input–single-output (SISO) variant, stacked in the same residual tower.
+- **Hybrid** — the Mamba-3 tower with rotary self-attention substituted at 2 of 15 layers
   (a Samba/Jamba-style sparse interleave).
 
-Parameter counts are matched to within 0.1% by tuning the Transformer's MLP width and the
-hybrid's depth. Blocks share the same pre-norm residual structure across all three models,
-so the only controlled variable is the per-layer token mixer.
+Because all blocks share the same pre-norm residual structure, the only controlled variable
+is the mixer. Parameter matching is achieved by tuning the Transformer's MLP width and the
+hybrid's depth.
 
 ### 3.2 Data and training
 
-We train from scratch on the Bangla (`ben_Beng`) split of FineWeb-2 (Penedo et al.,
-2024) — a cleaned, deduplicated, permissively-licensed web corpus. We tokenize 1.0B
-training tokens (≈41 tokens/parameter, ~2× Chinchilla-optimal) with a held-out test split
-for perplexity. All models use identical optimization: AdamW, cosine schedule, matched
-batch size and token budget, bf16, sequence length 1024. Each architecture is trained
-with two seeds (1337, 2024). Total compute is ≈3 A100-hours per run.
+We train from scratch on the Bangla (`ben_Beng`) split of FineWeb-2 (Penedo et al., 2025) —
+a cleaned, deduplicated, permissively-licensed multilingual web corpus — using a 32k
+SentencePiece BPE vocabulary (Kudo and Richardson, 2018) trained on the same data. Each
+model sees **1.0B training tokens** (≈41 tokens/parameter, roughly 2× the compute-optimal
+ratio of Hoffmann et al., 2022), with a held-out split for perplexity. Optimization is
+identical across models and seeds:
+
+| Setting | Value |
+|---|---|
+| Optimizer | AdamW (Loshchilov and Hutter, 2019), β=(0.9, 0.95), wd=0.1 |
+| LR schedule | cosine, warmup 1%, peak 8e-4, 10% floor |
+| Batch / seq len | 32 × grad-accum 2 × 1024 tokens |
+| Precision | bf16 |
+| Token budget | 1.0×10⁹ tokens |
+| Seeds | 1337, 2024 |
+
+Each run is ≈3 A100-hours. Batch sampling is a deterministic function of (seed, step), so
+runs resume exactly across interruptions.
 
 ### 3.3 Probe suite
 
-We construct 4,790 minimal pairs from hand-written Bangla conjugation tables (10 verbs ×
-3 tenses × 6 person/register cells) and reusable sentence frames. **A native speaker
+We construct 4,790 minimal pairs from hand-written Bangla conjugation tables (10 verbs × 3
+tenses × 6 person/register cells) combined with reusable sentence frames. **A native speaker
 reviewed the underlying lexicon** — verb morphology, temporal-adverb compatibility,
-intervener naturalness, and discourse coherence — and every issue was corrected before
-scoring. Four conditions:
+intervener naturalness, and discourse coherence — and every flagged issue was corrected
+before scoring. Four conditions:
 
 | Condition | Pairs | What it tests |
 |---|---|---|
-| **SVA** | 3,300 | subject–verb person/register agreement, interveners binned by length (none/short/medium/long) |
+| **SVA** | 3,300 | subject–verb person/register agreement; interveners binned none/short/medium/long |
 | **Attraction** | 1,190 | a competing-person pronoun inside the intervener lures the wrong agreement |
 | **Honorific** | 210 | তিনি/উনি vs. সে register agreement (single sentence) |
-| **Discourse** | 90 | register set in sentence 1, agreement tested on a pro-drop sentence 2 (± a verbless filler) |
+| **Discourse** | 90 | register set in sentence 1; agreement tested on a pro-drop sentence 2 (± a verbless filler) |
 
-Each pair is `(sen, wrong_sen)`; a model is **correct** if it assigns higher total
-log-probability to the grammatical `sen` (the BLiMP protocol). We report accuracy overall
-and by condition; the SVA distance bins are the key analysis.
+Example (SVA, honorific-register contrast): grammatical
+*উনি গতকাল বাড়িতে এলেন* ("[hon.] came home yesterday") vs. ungrammatical
+*উনি গতকাল বাড়িতে এল* (ordinary-register verb with an honorific subject).
+
+### 3.4 Scoring
+
+Each pair is `(sen, wrong_sen)`. A model is **correct** if it assigns higher total
+log-probability to the grammatical `sen` (the BLiMP protocol; Warstadt et al., 2020). We
+report accuracy overall and by condition; the SVA distance bins are the key analysis. The
+same scorer runs on our checkpoints and on any Hugging Face causal LM, and on MultiBLiMP's
+Bengali pairs as an external check.
 
 ## 4. Results
 
@@ -137,7 +164,7 @@ All numbers are the mean of two seeds; bands/error bars show the seed range.
 
 Mamba-3 (40.3) and the hybrid (39.9) both beat the Transformer (42.2) on held-out
 perplexity, tightly across seeds. **General language-modeling quality favors the SSM
-family** — the opposite of the agreement results below.
+family** — the opposite of the honorific-agreement result below.
 
 ### 4.2 The headline: agreement vs. distance
 
@@ -145,97 +172,186 @@ family** — the opposite of the agreement results below.
 
 The Transformer starts highest but **degrades monotonically as the subject–verb distance
 grows** (90.9% → 86.4%). Mamba-3 starts lower but is **flat-to-rising** (79.1% → 80.2%,
-peaking at medium distance). This direction holds in *both* seeds (Transformer −2.9pp and
-−6.2pp none→long; Mamba-3 +1.4pp and +0.8pp). Attention's advantage is a *local* one that
-erodes with distance; the SSM's fixed recurrent state shows no such decay. The hybrid sits
-between the two and is less stable across distance than pure Mamba-3.
+peaking at medium distance). The direction holds in *both* seeds (Transformer −2.9 and −6.2
+points none→long; Mamba-3 +1.4 and +0.8). Attention's advantage is a *local* one that erodes
+with distance; the SSM's fixed recurrent state shows no such decay. The hybrid lies between
+the two and is less stable across distance than pure Mamba-3.
 
 ### 4.3 Agreement by condition
 
 ![Accuracy by probe type](figures/fig2_probes.png)
 
-| Model | SVA | Attraction | Honorific | Discourse |
-|---|---|---|---|---|
-| Transformer | **88.5** | **86.6** | **78.8** | 67.2 |
-| Mamba-3 | 81.2 | 85.9 | 67.1 | **70.6** |
-| Hybrid | 86.3 | 82.4 | 74.1 | 67.2 |
+| Model | SVA (all) | SVA (−p2int) | Attraction | Honorific | Discourse |
+|---|---|---|---|---|---|
+| Transformer | **88.5** | 89.3 | **86.6** | **78.8** | 67.2 |
+| Mamba-3 | 81.2 | 87.4 | 85.9 | 67.1 | **70.6** |
+| Hybrid | 86.3 | — | 82.4 | 74.1 | 67.2 |
 
-The **Transformer leads local agreement** (SVA, attraction, honorific). Mamba-3's honorific
-weakness is notable (67.1%). But on **discourse** — register agreement across a sentence
-boundary with a dropped subject, the longest-range and hardest probe — **Mamba-3 is best
-and most stable** (70.6%), consistent with its recurrent state carrying register across
-the boundary. The hybrid recovers most of the SVA and honorific gap relative to Mamba-3
-but does not surpass the Transformer on any local condition, and shows the highest
-cross-seed variance on discourse and honorific.
+Two points matter here. First, **most of the raw SVA gap is a single rare-register cell**
+(§4.4): excluding 2nd-person-intimate, the Transformer–Mamba-3 SVA gap narrows from 7.3 to
+**1.9 points**, and attraction is already within 0.7 points. On general subject–verb
+agreement, the two architectures are close. Second, the Transformer's *clear* local
+advantage is **honorific register** (78.8 vs. 67.1) — Mamba-3's compressed state loses the
+register distinction more often. Conversely, on **discourse** — register agreement across a
+sentence boundary with a dropped subject, the longest-range and hardest probe — **Mamba-3 is
+best and most stable** (70.6%). The hybrid recovers much of the honorific gap relative to
+Mamba-3 but surpasses the Transformer on no local condition, and shows the highest cross-seed
+variance on honorific and discourse.
 
-### 4.4 The p2-intimate artifact
+### 4.4 The 2nd-person-intimate artifact
 
 The 2nd-person intimate register (তুই; forms like করিস) is very rare in web text. On this
-cell Mamba-3 scores *below chance* (12.0% / 25.3%) and the hybrid is unstable
-(49.3% / 74.7%), while the Transformer is stable (79.7% / 82.7%). This is a
-frequency/tokenization effect, not state-tracking; we exclude it from the main SVA figures
-and report it separately. Excluding p2-intimate, the SVA gap between Transformer and
-Mamba-3 narrows from ~7pp to ~4pp.
+cell Mamba-3 scores *below chance* (12.0% / 25.3% across seeds) and the hybrid is unstable
+(49.3% / 74.7%), while the Transformer is stable (79.7% / 82.7%). Below-chance behaviour
+means the model systematically prefers the more frequent (wrong) form — a
+frequency/tokenization effect, not a failure of state tracking. We therefore report SVA both
+with and without this cell (§4.3) and exclude it from Figure 1.
 
 ## 5. Discussion
 
-Two findings cut against a naive reading of "Mamba-3 tracks state better, so it should win
+Three findings cut against a naive reading of "Mamba-3 tracks state better, so it should win
 agreement":
 
 1. **Perplexity dissociates from morphosyntactic competence.** Mamba-3 models Bangla text
-   better (lower perplexity) yet is worse at explicit local agreement. Perplexity alone
-   would have hidden this.
+   better (lower perplexity) yet is markedly worse at honorific-register agreement.
+   Perplexity alone would have hidden this.
 2. **Fixed-size state trades local precision for distance robustness.** Attention pays for
-   its direct access to the subject with a decay over distance; the SSM's compressed state
-   is less precise locally but does not decay, and is best at the cross-sentence case.
+   direct access to the subject with a decay over distance; the SSM's compressed state is
+   less precise on register locally but does not decay, and is best across a sentence
+   boundary.
+3. **The "local" advantage of attention is narrower than it first appears.** Once the rare
+   p2-intimate artifact is removed, the two models are close on subject–verb and attraction
+   agreement; the Transformer's robust edge is specifically honorific register.
 
-The hybrid confirms these are somewhat separable competencies — two attention layers buy
-back local precision and the best perplexity — but "just add attention" does not yield a
-strict improvement over both parents, and it can increase variance. Where to place, and
-how many, attention layers for morphologically rich languages is an open question.
+The hybrid confirms these are partly separable competencies — two attention layers buy the
+best perplexity and recover honorific accuracy — but "just add attention" does not strictly
+dominate either parent, and can increase variance. Where and how many attention layers to
+place for morphologically rich languages is an open question.
 
 ## 6. Limitations
 
 - **Scale.** One model size (24.5M non-embedding), one token budget (1B). Trends may not
   hold at scale; this is a pilot, not a scaling study.
-- **Seeds.** Two seeds per model. Large gaps (distance trend, honorific) are robust;
-  small ones (discourse ranking, hybrid on honorific) have 3–6pp cross-seed spread and are
-  reported as suggestive.
-- **Probe construction.** Templated from a finite lexicon; native-speaker-reviewed but not
-  drawn from natural corpora. The honorific and discourse sets are small (210, 90).
-- **SISO only.** We do not evaluate Mamba-3's MIMO variant (requires kernels unavailable in
-  the released package build).
+- **Seeds.** Two seeds per model. Large effects (the distance trend, the honorific gap) are
+  robust; smaller ones (the discourse ranking, the hybrid on honorific) have 3–6-point
+  cross-seed spread and are reported as suggestive.
+- **Probe construction.** Templated from a finite hand-written lexicon; native-speaker
+  reviewed but not sampled from natural corpora. The honorific and discourse sets are small
+  (210 and 90 pairs).
+- **SISO only.** We do not evaluate Mamba-3's MIMO variant (its kernels are unavailable in
+  the released package build we used).
 
-## 7. Conclusion
+## 7. Reproducibility
 
-In a controlled, iso-parameter, iso-token Bangla comparison, Mamba-3's fixed recurrent
-state does not uniformly help or hurt agreement: it makes the model *worse* at nearby,
-explicit agreement but *more robust* to distance and better across a sentence boundary,
-while achieving lower perplexity than a matched Transformer. A sparse hybrid recovers much
-of the local gap and the best perplexity without strictly dominating. The result is new
-for Bangla and, we believe, for South Asian morphologically rich languages generally. We
-release the probe suite, code, and checkpoints to support replication and extension to
-other languages and scales.
+All code, configs, the probe generator and reviewed lexicon, the Colab pipeline, and per-seed
+results are released (links above). Checkpoints for all six runs (three architectures × two
+seeds), the tokenizer, and the raw eval JSONs are on the Hugging Face Hub. Figures regenerate
+from `paper/results.json` with no GPU or data access. Data sampling is deterministic given
+(seed, step).
+
+## 8. Conclusion
+
+In a controlled, iso-parameter, iso-token Bangla comparison, Mamba-3's fixed recurrent state
+does not uniformly help or hurt agreement: it is *worse* at honorific register and *more
+robust* to distance and cross-sentence dependencies, while achieving lower perplexity than a
+matched Transformer. On general subject–verb agreement the two are close once a rare-register
+artifact is set aside. A sparse hybrid recovers honorific accuracy and the best perplexity
+without strictly dominating. The result is new for Bangla and, we believe, for South Asian
+morphologically rich languages generally; we release the suite, code, and checkpoints to
+support replication and extension.
+
+## Ethics and broader impact
+
+The probe suite is synthetic, contains no personal data, and targets grammatical
+well-formedness only. Training data is the public, license-cleared FineWeb-2 corpus; like all
+web corpora it may contain social biases, which our agreement-focused evaluation does not
+measure. The models are small research artifacts, not deployment-ready systems. We hope the
+released Bangla probe suite lowers the barrier to targeted syntactic evaluation for an
+under-resourced language.
 
 ## References
 
-- Gu, A. and Dao, T. (2023). *Mamba: Linear-Time Sequence Modeling with Selective State
-  Spaces.*
-- Lahoti, A., Li, K. Y., et al. (2026). *Mamba-3: Improved Sequence Modeling using State
-  Space Principles.* ICLR 2026.
-- Jumelet, J., Weissweiler, L., et al. (2026). *MultiBLiMP 1.0: A Massively Multilingual
-  Benchmark of Linguistic Minimal Pairs.* TACL.
-- Warstadt, A., et al. (2020). *BLiMP: The Benchmark of Linguistic Minimal Pairs for
-  English.* TACL.
-- Linzen, T., Dupoux, E., and Goldberg, Y. (2016). *Assessing the Ability of LSTMs to Learn
-  Syntax-Sensitive Dependencies.* TACL.
-- Penedo, G., et al. (2024). *FineWeb-2: A sparse, multilingual pretraining corpus.*
-- Ren, L., et al. (2025). *Samba: Simple Hybrid State Space Models for Efficient Unlimited
-  Context Language Modeling.*
-- Lieber, O., et al. (2024). *Jamba: A Hybrid Transformer-Mamba Language Model.*
+Abhik Bhattacharjee, Tahmid Hasan, Wasi Uddin Ahmad, Kazi Samin Mubasshir, Md Saiful Islam,
+Anindya Iqbal, M. Sohel Rahman, and Rifat Shahriyar. 2022. **BanglaBERT: Language Model
+Pretraining and Benchmarks for Low-Resource Language Understanding Evaluation in Bangla.** In
+*Findings of the Association for Computational Linguistics: NAACL 2022*, pages 1318–1327.
+
+Tri Dao and Albert Gu. 2024. **Transformers are SSMs: Generalized Models and Efficient
+Algorithms Through Structured State Space Duality.** In *Proceedings of the 41st International
+Conference on Machine Learning (ICML)*.
+
+Albert Gu and Tri Dao. 2024. **Mamba: Linear-Time Sequence Modeling with Selective State
+Spaces.** In *Conference on Language Modeling (COLM)*. Outstanding Paper Award.
+
+Jordan Hoffmann, Sebastian Borgeaud, Arthur Mensch, et al. 2022. **Training Compute-Optimal
+Large Language Models.** In *Advances in Neural Information Processing Systems (NeurIPS)*.
+
+Jaap Jumelet, Leonie Weissweiler, Joakim Nivre, and Arianna Bisazza. 2026. **MultiBLiMP 1.0:
+A Massively Multilingual Benchmark of Linguistic Minimal Pairs.** *Transactions of the
+Association for Computational Linguistics*, 14:193–216.
+
+Taku Kudo and John Richardson. 2018. **SentencePiece: A Simple and Language Independent
+Subword Tokenizer and Detokenizer for Neural Text Processing.** In *Proceedings of EMNLP 2018:
+System Demonstrations*, pages 66–71.
+
+Aakash Lahoti, Kevin Y. Li, Berlin Chen, Caitlin Wang, Aviv Bick, J. Zico Kolter, Tri Dao,
+and Albert Gu. 2026. **Mamba-3: Improved Sequence Modeling using State Space Principles.** In
+*International Conference on Learning Representations (ICLR)*. Oral.
+
+Opher Lieber, Barak Lenz, Hofit Bata, et al. 2024. **Jamba: A Hybrid Transformer-Mamba
+Language Model.** arXiv:2403.19887.
+
+Tal Linzen, Emmanuel Dupoux, and Yoav Goldberg. 2016. **Assessing the Ability of LSTMs to
+Learn Syntax-Sensitive Dependencies.** *Transactions of the Association for Computational
+Linguistics*, 4:521–535.
+
+Ilya Loshchilov and Frank Hutter. 2019. **Decoupled Weight Decay Regularization.** In
+*International Conference on Learning Representations (ICLR)*.
+
+Guilherme Penedo, Hynek Kydlíček, Vinko Sabolčec, Bettina Messmer, Negar Foroutan, Amir
+Hossein Kargaran, Colin Raffel, Martin Jaggi, Leandro Von Werra, and Thomas Wolf. 2025.
+**FineWeb2: One Pipeline to Scale Them All — Adapting Pre-Training Data Processing to Every
+Language.** arXiv:2506.20920.
+
+Liliang Ren, Yang Liu, Yadong Lu, Yelong Shen, Chen Liang, and Weizhu Chen. 2025. **Samba:
+Simple Hybrid State Space Models for Efficient Unlimited Context Language Modeling.** In
+*International Conference on Learning Representations (ICLR)*.
+
+Noam Shazeer. 2020. **GLU Variants Improve Transformer.** arXiv:2002.05202.
+
+Jianlin Su, Murtadha Ahmed, Yu Lu, Shengfeng Pan, Wen Bo, and Yunfeng Liu. 2024. **RoFormer:
+Enhanced Transformer with Rotary Position Embedding.** *Neurocomputing*, 568:127063.
+
+Hugo Touvron, Thibaut Lavril, Gautier Izacard, et al. 2023. **LLaMA: Open and Efficient
+Foundation Language Models.** arXiv:2302.13971.
+
+Alex Warstadt, Alicia Parrish, Haokun Liu, Anhad Mohananey, Wei Peng, Sheng-Fu Wang, and
+Samuel R. Bowman. 2020. **BLiMP: The Benchmark of Linguistic Minimal Pairs for English.**
+*Transactions of the Association for Computational Linguistics*, 8:377–392.
+
+Biao Zhang and Rico Sennrich. 2019. **Root Mean Square Layer Normalization.** In *Advances in
+Neural Information Processing Systems (NeurIPS)*.
 
 ---
 
-*Appendix (per-seed tables, full per-condition breakdowns, and the conjugation lexicon)
-is available in the repository under `paper/results.json`, the probe generator under
-`bangla_ssm/probes/`, and the eval outputs under the released model repo `results/`.*
+### Appendix A. Per-seed results
+
+Perplexity / overall accuracy per seed (seed 1337 / seed 2024):
+
+| Model | PPL | SVA | Attraction | Honorific | Discourse |
+|---|---|---|---|---|---|
+| Transformer | 42.24 / 42.14 | 90.1 / 86.9 | 88.7 / 84.5 | 78.6 / 79.1 | 67.8 / 66.7 |
+| Mamba-3 | 40.23 / 40.28 | 80.6 / 81.7 | 84.5 / 87.3 | 68.1 / 66.2 | 70.0 / 71.1 |
+| Hybrid | 39.99 / 39.90 | 84.5 / 88.2 | 79.3 / 85.5 | 75.2 / 72.9 | 64.4 / 70.0 |
+
+SVA accuracy by distance (mean of two seeds), %:
+
+| Model | none | short | medium | long |
+|---|---|---|---|---|
+| Transformer | 90.9 | 90.3 | 89.7 | 86.4 |
+| Mamba-3 | 79.1 | 80.6 | 82.8 | 80.2 |
+| Hybrid | 87.0 | 87.0 | 87.6 | 84.8 |
+
+2nd-person-intimate (p2int) SVA accuracy, per seed: Transformer 79.7 / 82.7; Mamba-3
+12.0 / 25.3; Hybrid 49.3 / 74.7. Full per-condition, per-seed breakdowns are in the released
+`results/` directory.
