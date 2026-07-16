@@ -1,0 +1,47 @@
+{
+  "_note": "Final results. 3 architectures x 2 seeds, ~24.5M non-embedding params, 1B tokens Bangla (FineWeb-2 ben_Beng). Scored against native-speaker-reviewed probes (repo commit f453315+).",
+  "seeds": [1337, 2024],
+  "perplexity": {
+    "transformer": [42.24, 42.14],
+    "mamba3":      [40.23, 40.28],
+    "hybrid":      [39.99, 39.90]
+  },
+  "sva_overall": {
+    "transformer": [0.9009, 0.8694],
+    "mamba3":      [0.8064, 0.8167],
+    "hybrid":      [0.8445, 0.8821]
+  },
+  "sva_by_distance": {
+    "_order": ["none", "short", "medium", "long"],
+    "transformer": {"s1": [0.918, 0.924, 0.903, 0.889], "s2": [0.900, 0.882, 0.890, 0.838]},
+    "mamba3":      {"s1": [0.782, 0.791, 0.827, 0.796], "s2": [0.800, 0.821, 0.828, 0.808]},
+    "hybrid":      {"s1": [0.870, 0.858, 0.856, 0.824], "s2": [0.870, 0.882, 0.895, 0.872]}
+  },
+  "attraction_overall": {
+    "transformer": [0.8874, 0.8454],
+    "mamba3":      [0.8445, 0.8731],
+    "hybrid":      [0.7933, 0.8546]
+  },
+  "honorific_overall": {
+    "transformer": [0.7857, 0.7905],
+    "mamba3":      [0.6810, 0.6619],
+    "hybrid":      [0.7524, 0.7286]
+  },
+  "discourse_overall": {
+    "transformer": [0.6778, 0.6667],
+    "mamba3":      [0.7000, 0.7111],
+    "hybrid":      [0.6444, 0.7000]
+  },
+  "discourse_by_distance": {
+    "_order": ["adjacent", "one_filler"],
+    "transformer": {"s1": [0.733, 0.622], "s2": [0.800, 0.533]},
+    "mamba3":      {"s1": [0.800, 0.600], "s2": [0.778, 0.644]},
+    "hybrid":      {"s1": [0.733, 0.556], "s2": [0.822, 0.578]}
+  },
+  "p2_int_sva": {
+    "_note": "2nd-person intimate (তুই); rare register in web text -> frequency artifact, reported separately from the main SVA numbers.",
+    "transformer": [0.797, 0.827],
+    "mamba3":      [0.120, 0.253],
+    "hybrid":      [0.493, 0.747]
+  }
+}

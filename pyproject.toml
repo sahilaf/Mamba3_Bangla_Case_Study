@@ -1,0 +1,12 @@
+[project]
+name = "bangla-ssm"
+version = "0.1.0"
+description = "Controlled Transformer vs Mamba-3 comparison on Bangla"
+requires-python = ">=3.10"
+dependencies = ["numpy"]
+
+[tool.setuptools.packages.find]
+include = ["bangla_ssm*"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]

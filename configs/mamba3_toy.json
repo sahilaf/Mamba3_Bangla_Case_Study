@@ -1,0 +1,12 @@
+{
+  "arch": "mamba3",
+  "vocab_size": 32768,
+  "d_model": 256,
+  "n_layer": 7,
+  "d_state": 128,
+  "expand": 2,
+  "headdim": 64,
+  "is_mimo": false,
+  "seq_len": 512,
+  "tie_embeddings": true
+}

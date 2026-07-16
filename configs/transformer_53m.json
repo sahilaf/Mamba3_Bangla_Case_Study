@@ -1,0 +1,11 @@
+{
+  "arch": "transformer",
+  "vocab_size": 32768,
+  "d_model": 512,
+  "n_layer": 8,
+  "n_head": 8,
+  "intermediate_size": 1312,
+  "rope_theta": 10000.0,
+  "seq_len": 1024,
+  "tie_embeddings": true
+}

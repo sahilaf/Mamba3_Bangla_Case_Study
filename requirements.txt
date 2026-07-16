@@ -1,0 +1,13 @@
+# Local (probe generation, tests, figures): numpy/pytest/matplotlib.
+numpy
+pytest
+matplotlib   # paper/figures.py only
+
+# Colab / GPU training + eval (installed in the driver notebook):
+# torch (preinstalled on Colab)
+# sentencepiece
+# datasets
+# einops
+# transformers
+# mamba-ssm>=2.3.2   (install with --no-build-isolation)
+# tilelang           (ONLY for the optional MIMO variant)
