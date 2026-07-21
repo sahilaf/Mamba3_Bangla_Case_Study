@@ -69,13 +69,14 @@ def print_ci_table():
         # we report the pre-computed pooled means with CI over n=3000*2.
         pass
 
-    print("\n== SVA by distance (Transformer none vs long) ==")
-    for m in ["transformer", "mamba3"]:
-        d = RES["sva_by_distance"][m]
+    print("\n== SVA by distance (per model, per bin) ==")
+    for m in ["transformer", "mamba3", "hybrid"]:
+        seeds = RES["sva_by_distance"][m]  # list of per-seed arrays
         for i, bin_name in enumerate(RES["sva_by_distance"]["_order"]):
-            accs = [d["s1"][i], d["s2"][i]]
+            accs = [s[i] for s in seeds]
             mean, lo, hi = pooled_ci(accs, N[f"sva_{bin_name}"])
-            print(f"  {m:12s} {bin_name:7s} {mean*100:5.1f}%  [{lo*100:.1f}, {hi*100:.1f}]")
+            print(f"  {m:12s} {bin_name:7s} {mean*100:5.1f}%  [{lo*100:.1f}, {hi*100:.1f}]"
+                  f"  (n_seeds={len(seeds)})")
 
 
 def mcnemar(a_correct: dict, b_correct: dict) -> tuple[int, int, float]:

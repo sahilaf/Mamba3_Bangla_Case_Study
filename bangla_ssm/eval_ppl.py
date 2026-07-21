@@ -8,6 +8,7 @@
 from __future__ import annotations
 
 import argparse
+import json
 import math
 
 import torch
@@ -26,6 +27,7 @@ def main():
     ap.add_argument("--data_dir", required=True)
     ap.add_argument("--batch_size", type=int, default=16)
     ap.add_argument("--limit_tokens", type=int, default=None)
+    ap.add_argument("--out", default=None, help="optional JSON path to write {ppl, nll, tokens}")
     args = ap.parse_args()
 
     cfg = ExpConfig.load(args.config)
@@ -63,7 +65,16 @@ def main():
         flush(xs, ys)
 
     nll = total_nll / total_tok
-    print(f"eval tokens={total_tok}  nll/token={nll:.4f}  ppl={math.exp(nll):.2f}")
+    ppl = math.exp(nll)
+    print(f"eval tokens={total_tok}  nll/token={nll:.4f}  ppl={ppl:.2f}")
+    if args.out:
+        from pathlib import Path
+        Path(args.out).parent.mkdir(parents=True, exist_ok=True)
+        Path(args.out).write_text(
+            json.dumps({"ckpt": args.ckpt, "tokens": total_tok,
+                        "nll": round(nll, 6), "ppl": round(ppl, 4)}, indent=2),
+            encoding="utf-8")
+        print(f"wrote {args.out}")
 
 
 if __name__ == "__main__":

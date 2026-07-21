@@ -60,10 +60,10 @@ def fig_distance():
     x = range(len(order))
     fig, ax = plt.subplots(figsize=(5.2, 3.6))
     for m in MODELS:
-        d = RES["sva_by_distance"][m]
+        seeds = RES["sva_by_distance"][m]  # list of per-seed [none,short,medium,long]
         mean, lo, hi = [], [], []
         for i, b in enumerate(order):
-            mn, l, h = pooled_ci([d["s1"][i], d["s2"][i]], N[f"sva_{b}"])
+            mn, l, h = pooled_ci([s[i] for s in seeds], N[f"sva_{b}"])
             mean.append(mn * 100); lo.append(l * 100); hi.append(h * 100)
         ax.fill_between(x, lo, hi, color=COLOR[m], alpha=0.15, linewidth=0)
         ax.plot(x, mean, color=COLOR[m], marker=MARKER[m], markersize=6,
