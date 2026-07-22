@@ -88,9 +88,12 @@ def fig_probes():
     for j, m in enumerate(MODELS):
         means, errs = [], []
         for p, c in zip(probes, conds):
-            mn, lo, hi = pooled_ci(RES[p][m], N[c])  # Wilson 95% CI half-width
+            vals = RES[p][m]
+            mn = sum(vals) / len(vals)
+            # cross-seed standard deviation: honest between-architecture spread
+            sd = (sum((v - mn) ** 2 for v in vals) / len(vals)) ** 0.5
             means.append(mn * 100)
-            errs.append((hi - lo) / 2 * 100)
+            errs.append(sd * 100)
         xs = [i + (j - 1) * w for i in range(len(probes))]
         ax.bar(xs, means, width=w, color=COLOR[m], label=LABEL[m],
                hatch=HATCH[m], edgecolor="white", linewidth=0.6,

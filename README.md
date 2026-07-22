@@ -10,21 +10,27 @@ Bangla subject–verb person/honorific agreement.
 🤗 **Probes:** [sahilfarib/bangla-agreement-probes](https://huggingface.co/datasets/sahilfarib/bangla-agreement-probes) ·
 🤗 **Checkpoints:** [sahilfarib/mamba3-bangla-case-study](https://huggingface.co/sahilfarib/mamba3-bangla-case-study)
 
-## Headline result
+## Headline result (5 seeds)
 
-The Transformer's agreement accuracy **degrades as the subject–verb distance grows**;
-Mamba-3's **does not** (both seeds). Yet the Transformer wins *local* agreement while
-Mamba-3 wins *perplexity* and the hardest *cross-sentence* probe. Fixed-size recurrent
-state trades local precision for distance robustness — and perplexity does not predict
-morphosyntactic competence.
+Two robust findings and one cautionary one:
+1. **Recurrence wins perplexity** — Mamba-3 and the hybrid beat the Transformer (all seeds, p<0.001).
+2. **Attention degrades with subject–verb distance; recurrence does not** — the Transformer's
+   agreement accuracy falls as the dependency lengthens (every seed), Mamba-3's is flat, and the
+   hybrid patterns with attention. This is the central architectural signal.
+3. **Most between-architecture *agreement* gaps are not statistically robust** once cross-seed
+   variance is included — because **Mamba-3 is far more seed-sensitive** than the Transformer.
+   The clean 2-seed "Transformer wins honorific" result did *not* replicate at 5 seeds (p=0.25).
 
 ![SVA accuracy vs. subject–verb distance](paper/figures/fig1_distance.png)
 
-| Model (24.5M, 1B tok, mean of 2 seeds) | Perplexity ↓ | SVA | Attraction | Honorific | Discourse |
+| Model (24.5M, 1B tok, mean±sd over 5 seeds) | Perplexity ↓ | SVA | Attraction | Honorific | Discourse |
 |---|---|---|---|---|---|
-| Transformer | 42.2 | **88.5** | **86.6** | **78.8** | 67.2 |
-| Mamba-3 | 40.3 | 81.2 | 85.9 | 67.1 | **70.6** |
-| Hybrid (Mamba-3 + 2 attn layers) | **39.9** | 86.3 | 82.4 | 74.1 | 67.2 |
+| Transformer | 42.2 | 89.3 ±1.5 | 87.0 ±2.8 | 78.0 ±3.5 | 64.4 ±2.7 |
+| Mamba-3 | 40.2 | 83.0 ±5.6 | 84.6 ±6.1 | 72.5 ±8.4 | **69.3 ±3.7** |
+| Hybrid (Mamba-3 + 2 attn layers) | **39.9** | 85.0 ±3.5 | 82.9 ±2.6 | 70.9 ±4.5 | 68.0 ±2.9 |
+
+Between-architecture significance is by cross-seed Welch t-test; within-model distance trends by
+Wilson CIs. Reproduce with `python paper/stats.py`.
 
 ## Repo layout
 

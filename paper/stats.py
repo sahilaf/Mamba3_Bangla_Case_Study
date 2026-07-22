@@ -44,8 +44,71 @@ def pooled_ci(accs: list[float], n_per_seed: int) -> tuple[float, float, float]:
     return mean, lo, hi
 
 
+def welch_t(a: list[float], b: list[float]):
+    """Welch's t-test across seeds (proper between-architecture test)."""
+    na, nb = len(a), len(b)
+    ma, mb = sum(a) / na, sum(b) / nb
+    va = sum((x - ma) ** 2 for x in a) / (na - 1)
+    vb = sum((x - mb) ** 2 for x in b) / (nb - 1)
+    se = math.sqrt(va / na + vb / nb)
+    if se == 0:
+        return ma - mb, float("inf"), 0.0
+    t = (ma - mb) / se
+    df = (va / na + vb / nb) ** 2 / (
+        (va / na) ** 2 / (na - 1) + (vb / nb) ** 2 / (nb - 1))
+    # two-sided p via a Student-t survival approximation
+    x = df / (df + t * t)
+    # regularized incomplete beta I_x(df/2, 1/2) via continued fraction (good enough)
+    p = _betai(df / 2.0, 0.5, x)
+    return ma - mb, t, p
+
+
+def _betai(a, b, x):
+    if x <= 0:
+        return 0.0
+    if x >= 1:
+        return 1.0
+    lbeta = math.lgamma(a) + math.lgamma(b) - math.lgamma(a + b)
+    front = math.exp(math.log(x) * a + math.log(1 - x) * b - lbeta) / a
+    c, d = 1.0, 1.0 - (a + b) * x / (a + 1)
+    d = 1e-30 if abs(d) < 1e-30 else 1 / d
+    h = d
+    for i in range(1, 200):
+        m = i // 2
+        if i % 2 == 0:
+            num = m * (b - m) * x / ((a + 2 * m - 1) * (a + 2 * m))
+        else:
+            num = -(a + m) * (a + b + m) * x / ((a + 2 * m) * (a + 2 * m + 1))
+        d = 1 + num * d
+        d = 1e-30 if abs(d) < 1e-30 else 1 / d
+        c = 1 + num / (1e-30 if abs(1 + num / c) < 1e-30 else c)
+        c = 1 + num / c if abs(c) > 1e-30 else 1e-30
+        h *= d * c
+        if abs(1 - d * c) < 1e-8:
+            break
+    return front * h
+
+
+def print_between_arch():
+    print("\n== Between-architecture Welch t-test ACROSS SEEDS (proper test) ==")
+    conds = [("perplexity", "perplexity", False), ("SVA", "sva_overall", True),
+             ("attraction", "attraction_overall", True),
+             ("honorific", "honorific_overall", True),
+             ("discourse", "discourse_overall", True)]
+    pairs = [("transformer", "mamba3"), ("transformer", "hybrid"), ("mamba3", "hybrid")]
+    for label, key, higher_better in conds:
+        print(f"\n{label}:")
+        for a, b in pairs:
+            va, vb = RES[key][a], RES[key][b]
+            diff, t, p = welch_t(va, vb)
+            sig = "**" if p < 0.05 else ("*" if p < 0.10 else "ns")
+            sc = 1 if key == "perplexity" else 100
+            print(f"  {a:11s} vs {b:11s}  diff={diff*sc:+6.2f}  t={t:+.2f}  p={p:.3f}  {sig}")
+
+
 def print_ci_table():
-    print("== Wilson 95% CIs (pooled over 2 seeds) ==")
+    n_seeds = len(RES["sva_overall"]["transformer"])
+    print(f"== Wilson 95% CIs (pooled over {n_seeds} seeds) ==")
     conds = [
         ("perplexity (seed range only)", "perplexity", None),
         ("SVA (all)", "sva_overall", "sva"),
@@ -125,6 +188,7 @@ def main():
     ap.add_argument("--dumps", default=None, help="dir of per-pair CSVs for McNemar")
     args = ap.parse_args()
     print_ci_table()
+    print_between_arch()
     if args.dumps:
         run_mcnemar(args.dumps)
 
