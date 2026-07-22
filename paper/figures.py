@@ -29,10 +29,8 @@ OUT.mkdir(exist_ok=True)
 
 MODELS = ["transformer", "mamba3", "hybrid"]
 LABEL = {"transformer": "Transformer", "mamba3": "Mamba-3", "hybrid": "Hybrid"}
-COLOR = {"transformer": "#2a78d6", "mamba3": "#1baf7a", "hybrid": "#4a3aa7"}
+COLOR = {"transformer": "#2a78d6", "mamba3": "#1baf7a", "hybrid": "#5a4fbf"}
 MARKER = {"transformer": "o", "mamba3": "D", "hybrid": "^"}
-HATCH = {"transformer": "", "mamba3": "///", "hybrid": "..."}
-DOT = "#2c2c2a"
 
 plt.rcParams.update({
     "font.size": 12,
@@ -100,28 +98,19 @@ def fig_distance():
 
 def _grouped(ax, keys, conds, names, ylabel, ylim, chance=None):
     w = 0.26
-    rng = __import__("random").Random(0)
     for j, m in enumerate(MODELS):
-        xs, means, errs = [], [], []
-        for i, (k, c) in enumerate(zip(keys, conds)):
-            vals = [v * 100 for v in RES[k][m]]
-            xs.append(i + (j - 1) * w)
-            means.append(_mean(vals))
-            errs.append(_sd(vals))
-        ax.bar(xs, means, width=w, color=COLOR[m], label=LABEL[m], hatch=HATCH[m],
+        xs = [i + (j - 1) * w for i in range(len(keys))]
+        means = [_mean([v * 100 for v in RES[k][m]]) for k in keys]
+        errs = [_sd([v * 100 for v in RES[k][m]]) for k in keys]
+        ax.bar(xs, means, width=w, color=COLOR[m], label=LABEL[m],
                edgecolor="white", linewidth=0.7, zorder=2,
-               yerr=errs, capsize=2.5, error_kw={"elinewidth": 1, "ecolor": "#333331", "zorder": 4})
-        # individual per-seed points -> shows cross-seed spread directly
-        for i, k in enumerate(keys):
-            xc = i + (j - 1) * w
-            for v in RES[k][m]:
-                ax.plot(xc + rng.uniform(-0.06, 0.06), v * 100, "o", markersize=2.4,
-                        color=DOT, alpha=0.75, zorder=5, markeredgewidth=0)
+               yerr=errs, capsize=2.5,
+               error_kw={"elinewidth": 1, "ecolor": "#333331", "zorder": 4})
     if chance is not None:
-        ax.axhline(chance, color="#9a9990", linestyle=(0, (2, 2)), linewidth=0.9, zorder=1)
-        ax.annotate("chance", xy=(len(keys) - 1 + 0.42, chance), fontsize=8.5,
-                    color="#7a7a72", va="center", ha="left",
-                    annotation_clip=False)
+        ax.axhline(chance, color="#9a9990", linestyle=(0, (3, 3)), linewidth=0.9, zorder=1)
+        ax.set_xlim(-0.5, len(keys) - 0.5 + 0.36)
+        ax.text(len(keys) - 0.5 + 0.05, chance, "chance", fontsize=8.5,
+                color="#8a8a82", va="center", ha="left")
     ax.set_xticks(range(len(keys)))
     ax.set_xticklabels(names)
     ax.set_ylabel(ylabel)
@@ -142,18 +131,14 @@ def fig_probes():
 
 
 def fig_perplexity():
-    """Fig 3 — held-out perplexity (lower is better); dots = per-seed."""
+    """Fig 3 — held-out perplexity (lower is better); error bars = cross-seed SD."""
     fig, ax = plt.subplots(figsize=(3.0, 3.0), constrained_layout=True)
-    rng = __import__("random").Random(1)
     for i, m in enumerate(MODELS):
         vals = RES["perplexity"][m]
         mn, sd = _mean(vals), _sd(vals)
-        ax.bar(i, mn, width=0.62, color=COLOR[m], hatch=HATCH[m], edgecolor="white",
+        ax.bar(i, mn, width=0.62, color=COLOR[m], edgecolor="white",
                linewidth=0.7, zorder=2, yerr=sd, capsize=3,
                error_kw={"elinewidth": 1, "ecolor": "#333331", "zorder": 4})
-        for v in vals:
-            ax.plot(i + rng.uniform(-0.12, 0.12), v, "o", markersize=2.6,
-                    color=DOT, alpha=0.75, zorder=5, markeredgewidth=0)
         ax.text(i, mn + sd + 0.12, f"{mn:.1f}", ha="center", va="bottom",
                 fontsize=10, color="#2c2c2a")
     ax.set_xticks(range(len(MODELS)))
