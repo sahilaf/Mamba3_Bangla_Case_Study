@@ -190,6 +190,12 @@ The dominant reason the local gaps fail to reach significance is **Mamba-3's see
 scale, the SSM's morphosyntactic competence is much more initialization-dependent — itself a
 finding a two-seed study would have missed.
 
+Concretely, a *single-seed* item-level McNemar test finds the Transformer significantly ahead
+of Mamba-3 on SVA, attraction, and honorific (all p < 0.01 for seed 1). That these same gaps
+are non-significant under cross-seed testing is a direct, quantified illustration of how
+within-run significance overclaims when a model is seed-sensitive: the honorific "advantage"
+(McNemar p = 0.0015 in one seed) does not survive replication (Welch p = 0.25 across five).
+
 ### 4.4 The 2nd-person-intimate artifact
 
 The 2nd-person intimate register (তুই; forms like করিস) is very rare in web text and behaves
