@@ -18,17 +18,20 @@ parameter- and token-matched Transformer, Mamba-3, and hybrid language models (2
 non-embedding parameters, 1B tokens, **five seeds each**) from scratch on Bangla, and
 evaluating them on a new suite of 4,790 native-speaker-reviewed minimal pairs targeting Bangla
 subject–verb person and honorific-register agreement. Assessing every comparison with Wilson
-confidence intervals and cross-seed Welch t-tests, we find two robust results and one
-cautionary one. **(1)** The Mamba family is significantly better at language modeling: Mamba-3
-and the hybrid beat the Transformer on perplexity across all seeds. **(2)** Attention and
-recurrence differ in *how agreement accuracy scales with distance*: the Transformer's
-subject–verb agreement degrades as the subject–verb distance grows (in every seed), while
-Mamba-3's does not — and the hybrid patterns with attention. **(3)** Most *between-architecture*
-agreement gaps, including honorific register, are **not** statistically robust once cross-seed
-variance is accounted for, because Mamba-3 is markedly more seed-sensitive than the
-Transformer. Perplexity does not predict the distance behavior, and the headline architectural
-signal is about robustness to distance, not a uniform "better" model. We release code, probes,
-all fifteen checkpoints, and the analysis scripts.
+confidence intervals and cross-seed Welch t-tests, we report three findings. **(1)** The Mamba
+family is significantly better at language modeling: Mamba-3 and the hybrid beat the Transformer
+on perplexity across all five seeds (p < 0.001). **(2)** Attention and recurrence dissociate in
+*how agreement accuracy scales with distance*: the Transformer's subject–verb agreement degrades
+as the subject–verb distance grows — in every seed — while Mamba-3's does not, and the hybrid
+patterns with attention. This distance dissociation is our central architectural signal, and it
+is robust across seeds. **(3)** Methodologically, we show that most single-run *between-architecture*
+agreement gaps — including a honorific-register advantage that is significant under a within-run
+McNemar test — **do not survive replication**, because Mamba-3's agreement accuracy is markedly
+more seed-sensitive than the Transformer's (cross-seed SD up to ±8.4 vs. ±3.5). At this scale,
+two-seed SSM comparisons can manufacture findings that vanish across five seeds. Perplexity does
+not predict the distance behavior: the architectural signal is about robustness to distance and
+initialization, not a uniformly "better" model. We release code, probes, all fifteen checkpoints,
+and the analysis scripts.
 
 ## 1. Introduction
 
@@ -54,10 +57,11 @@ model** so that between-architecture claims can be tested properly.
 2. A **reusable probe suite** of 4,790 native-speaker-reviewed Bangla minimal pairs for person
    and honorific agreement — distance-binned, with agreement-attraction and cross-sentence
    pro-drop conditions that have no English analogue.
-3. Two robust findings — an SSM perplexity advantage and a **distance dissociation** (attention
-   degrades with distance, recurrence does not) — plus a cautionary one: at this scale Mamba-3's
-   agreement accuracy is **much more seed-sensitive** than the Transformer's, so most
-   single-run agreement gaps do not replicate.
+3. Two robust architectural findings — an SSM perplexity advantage and a **distance dissociation**
+   (attention degrades with distance, recurrence does not) — and a **methodological result** for
+   the SSM-evaluation literature: at this scale Mamba-3's agreement accuracy is **much more
+   seed-sensitive** than the Transformer's, so most single-run agreement gaps (including one that
+   is significant under a within-run test) do not replicate across five seeds.
 
 ## 2. Related work
 
@@ -164,7 +168,7 @@ in two seeds. The hybrid — which contains attention — declines like the Tran
 attention's benefit is a *local* one that erodes with distance; the recurrent state does not
 decay in the same way. This dissociation is the paper's most robust agreement finding.
 
-### 4.3 Between-architecture agreement gaps are mostly not robust
+### 4.3 Seed sensitivity dominates local agreement gaps
 
 ![Accuracy by probe type: bars are the 5-seed mean, error bars the cross-seed SD, dots individual seeds; note Mamba-3's wide spread](figures/fig2_probes.png)
 
