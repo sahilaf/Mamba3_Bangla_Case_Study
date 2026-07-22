@@ -2,8 +2,12 @@
 
   python paper/figures.py
 
-Writes PNG (300 dpi, for GitHub/preview) and PDF (vector, for LaTeX) into
+Writes PNG (300 dpi, preview) and PDF (vector, for LaTeX \\includegraphics) into
 paper/figures/. No data or GPU needed — reads the final scored numbers only.
+
+Design: colour-blind-safe palette with redundant marker/hatch encoding, individual
+per-seed points overlaid so cross-seed spread is visible, sized for a single ACL
+column (~3.3in) with fonts that stay legible at that width.
 """
 
 from __future__ import annotations
@@ -23,22 +27,31 @@ RES = json.loads((HERE / "results.json").read_text(encoding="utf-8"))
 OUT = HERE / "figures"
 OUT.mkdir(exist_ok=True)
 
-# consistent, colour-blind-safe palette + distinct markers/hatches per model
 MODELS = ["transformer", "mamba3", "hybrid"]
 LABEL = {"transformer": "Transformer", "mamba3": "Mamba-3", "hybrid": "Hybrid"}
 COLOR = {"transformer": "#2a78d6", "mamba3": "#1baf7a", "hybrid": "#4a3aa7"}
 MARKER = {"transformer": "o", "mamba3": "D", "hybrid": "^"}
-HATCH = {"transformer": "", "mamba3": "//", "hybrid": ".."}
+HATCH = {"transformer": "", "mamba3": "///", "hybrid": "..."}
+DOT = "#2c2c2a"
 
 plt.rcParams.update({
-    "font.size": 11,
+    "font.size": 12,
     "font.family": "serif",
+    "mathtext.fontset": "cm",
     "axes.spines.top": False,
     "axes.spines.right": False,
+    "axes.linewidth": 0.8,
     "axes.grid": True,
-    "grid.color": "#e1e0d9",
-    "grid.linewidth": 0.8,
+    "axes.axisbelow": True,
+    "grid.color": "#e6e5df",
+    "grid.linewidth": 0.7,
+    "xtick.major.size": 0,
+    "ytick.major.size": 3,
+    "legend.handlelength": 1.4,
+    "legend.handletextpad": 0.5,
+    "legend.columnspacing": 1.2,
     "figure.dpi": 300,
+    "savefig.dpi": 300,
 })
 
 
@@ -46,82 +59,106 @@ def _mean(xs):
     return sum(xs) / len(xs)
 
 
+def _sd(xs):
+    m = _mean(xs)
+    return (sum((v - m) ** 2 for v in xs) / len(xs)) ** 0.5
+
+
 def save(fig, name):
-    fig.tight_layout()
-    fig.savefig(OUT / f"{name}.png", bbox_inches="tight")
-    fig.savefig(OUT / f"{name}.pdf", bbox_inches="tight")
+    fig.savefig(OUT / f"{name}.png", bbox_inches="tight", pad_inches=0.02)
+    fig.savefig(OUT / f"{name}.pdf", bbox_inches="tight", pad_inches=0.02)
     plt.close(fig)
     print("wrote", name + ".png/.pdf")
 
 
 def fig_distance():
-    """Fig 1 — the headline: SVA accuracy vs subject-verb distance."""
+    """Fig 1 — headline: SVA accuracy vs subject-verb distance (Wilson 95% CI bands)."""
     order = RES["sva_by_distance"]["_order"]
-    x = range(len(order))
-    fig, ax = plt.subplots(figsize=(5.2, 3.6))
+    labels = ["none", "short", "medium", "long"]
+    x = list(range(len(order)))
+    fig, ax = plt.subplots(figsize=(3.5, 3.0), constrained_layout=True)
     for m in MODELS:
-        seeds = RES["sva_by_distance"][m]  # list of per-seed [none,short,medium,long]
+        seeds = RES["sva_by_distance"][m]
         mean, lo, hi = [], [], []
         for i, b in enumerate(order):
             mn, l, h = pooled_ci([s[i] for s in seeds], N[f"sva_{b}"])
             mean.append(mn * 100); lo.append(l * 100); hi.append(h * 100)
-        ax.fill_between(x, lo, hi, color=COLOR[m], alpha=0.15, linewidth=0)
-        ax.plot(x, mean, color=COLOR[m], marker=MARKER[m], markersize=6,
-                linewidth=2, label=LABEL[m])
-    ax.set_xticks(list(x))
-    ax.set_xticklabels(order)
+        ax.fill_between(x, lo, hi, color=COLOR[m], alpha=0.13, linewidth=0)
+        ax.plot(x, mean, color=COLOR[m], marker=MARKER[m], markersize=5.5,
+                markeredgecolor="white", markeredgewidth=0.6,
+                linewidth=1.8, label=LABEL[m], clip_on=False)
+    ax.set_xticks(x)
+    ax.set_xticklabels(labels)
     ax.set_xlabel("subject–verb distance")
     ax.set_ylabel("agreement accuracy (%)")
     ax.set_ylim(75, 95)
-    ax.legend(frameon=False, ncol=3, loc="upper center",
-              bbox_to_anchor=(0.5, 1.13), columnspacing=1.2, handletextpad=0.5)
+    ax.set_xlim(-0.15, len(order) - 0.85)
+    ax.legend(frameon=False, ncol=3, loc="lower center", bbox_to_anchor=(0.5, 1.0),
+              fontsize=10.5, borderaxespad=0.2)
     save(fig, "fig1_distance")
 
 
-def fig_probes():
-    """Fig 2 — accuracy by probe type, grouped bars with seed range as error."""
-    probes = ["sva_overall", "attraction_overall", "honorific_overall", "discourse_overall"]
-    conds = ["sva", "attraction", "honorific", "discourse"]
-    names = ["SVA", "Attraction", "Honorific", "Discourse"]
-    fig, ax = plt.subplots(figsize=(6.2, 3.6))
+def _grouped(ax, keys, conds, names, ylabel, ylim, chance=None):
     w = 0.26
+    rng = __import__("random").Random(0)
     for j, m in enumerate(MODELS):
-        means, errs = [], []
-        for p, c in zip(probes, conds):
-            vals = RES[p][m]
-            mn = sum(vals) / len(vals)
-            # cross-seed standard deviation: honest between-architecture spread
-            sd = (sum((v - mn) ** 2 for v in vals) / len(vals)) ** 0.5
-            means.append(mn * 100)
-            errs.append(sd * 100)
-        xs = [i + (j - 1) * w for i in range(len(probes))]
-        ax.bar(xs, means, width=w, color=COLOR[m], label=LABEL[m],
-               hatch=HATCH[m], edgecolor="white", linewidth=0.6,
-               yerr=errs, capsize=3, error_kw={"elinewidth": 1, "ecolor": "#444441"})
-    ax.axhline(50, color="#888780", linestyle=":", linewidth=1)
-    ax.text(3.35, 51, "chance", fontsize=8, color="#888780", va="bottom", ha="right")
-    ax.set_xticks(range(len(probes)))
+        xs, means, errs = [], [], []
+        for i, (k, c) in enumerate(zip(keys, conds)):
+            vals = [v * 100 for v in RES[k][m]]
+            xs.append(i + (j - 1) * w)
+            means.append(_mean(vals))
+            errs.append(_sd(vals))
+        ax.bar(xs, means, width=w, color=COLOR[m], label=LABEL[m], hatch=HATCH[m],
+               edgecolor="white", linewidth=0.7, zorder=2,
+               yerr=errs, capsize=2.5, error_kw={"elinewidth": 1, "ecolor": "#333331", "zorder": 4})
+        # individual per-seed points -> shows cross-seed spread directly
+        for i, k in enumerate(keys):
+            xc = i + (j - 1) * w
+            for v in RES[k][m]:
+                ax.plot(xc + rng.uniform(-0.06, 0.06), v * 100, "o", markersize=2.4,
+                        color=DOT, alpha=0.75, zorder=5, markeredgewidth=0)
+    if chance is not None:
+        ax.axhline(chance, color="#9a9990", linestyle=(0, (2, 2)), linewidth=0.9, zorder=1)
+        ax.annotate("chance", xy=(len(keys) - 1 + 0.42, chance), fontsize=8.5,
+                    color="#7a7a72", va="center", ha="left",
+                    annotation_clip=False)
+    ax.set_xticks(range(len(keys)))
     ax.set_xticklabels(names)
-    ax.set_ylabel("accuracy (%)")
-    ax.set_ylim(0, 100)
-    ax.legend(frameon=False, ncol=3, loc="upper center", bbox_to_anchor=(0.5, 1.12))
+    ax.set_ylabel(ylabel)
+    ax.set_ylim(*ylim)
+    ax.legend(frameon=False, ncol=3, loc="lower center", bbox_to_anchor=(0.5, 1.0),
+              fontsize=10.5, borderaxespad=0.2)
+
+
+def fig_probes():
+    """Fig 2 — accuracy by probe type (bars=mean, error=cross-seed SD, dots=seeds)."""
+    fig, ax = plt.subplots(figsize=(5.4, 3.1), constrained_layout=True)
+    _grouped(ax,
+             ["sva_overall", "attraction_overall", "honorific_overall", "discourse_overall"],
+             ["sva", "attraction", "honorific", "discourse"],
+             ["SVA", "Attraction", "Honorific", "Discourse"],
+             "accuracy (%)", (45, 100), chance=50)
     save(fig, "fig2_probes")
 
 
 def fig_perplexity():
-    """Fig 3 — held-out perplexity (lower is better)."""
-    fig, ax = plt.subplots(figsize=(3.6, 3.4))
+    """Fig 3 — held-out perplexity (lower is better); dots = per-seed."""
+    fig, ax = plt.subplots(figsize=(3.0, 3.0), constrained_layout=True)
+    rng = __import__("random").Random(1)
     for i, m in enumerate(MODELS):
         vals = RES["perplexity"][m]
-        mn = _mean(vals)
-        err = (max(vals) - min(vals)) / 2
-        ax.bar(i, mn, width=0.6, color=COLOR[m], hatch=HATCH[m],
-               edgecolor="white", linewidth=0.6, yerr=err, capsize=4,
-               error_kw={"elinewidth": 1, "ecolor": "#444441"})
-        ax.text(i, mn + 0.15, f"{mn:.1f}", ha="center", fontsize=10)
+        mn, sd = _mean(vals), _sd(vals)
+        ax.bar(i, mn, width=0.62, color=COLOR[m], hatch=HATCH[m], edgecolor="white",
+               linewidth=0.7, zorder=2, yerr=sd, capsize=3,
+               error_kw={"elinewidth": 1, "ecolor": "#333331", "zorder": 4})
+        for v in vals:
+            ax.plot(i + rng.uniform(-0.12, 0.12), v, "o", markersize=2.6,
+                    color=DOT, alpha=0.75, zorder=5, markeredgewidth=0)
+        ax.text(i, mn + sd + 0.12, f"{mn:.1f}", ha="center", va="bottom",
+                fontsize=10, color="#2c2c2a")
     ax.set_xticks(range(len(MODELS)))
-    ax.set_xticklabels([LABEL[m] for m in MODELS], rotation=12)
-    ax.set_ylabel("perplexity (↓)")
+    ax.set_xticklabels([LABEL[m] for m in MODELS], rotation=15, ha="right")
+    ax.set_ylabel("perplexity (lower is better)")
     ax.set_ylim(38, 43)
     save(fig, "fig3_perplexity")
 

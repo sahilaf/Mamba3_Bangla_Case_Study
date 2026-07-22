@@ -131,7 +131,7 @@ All numbers are means over five seeds; "±" is the cross-seed standard deviation
 
 ### 4.1 Perplexity — a robust SSM advantage
 
-![Held-out perplexity](figures/fig3_perplexity.png)
+![Held-out perplexity: bars are the 5-seed mean, error bars the cross-seed SD, dots individual seeds](figures/fig3_perplexity.png)
 
 | Model | Perplexity ↓ |
 |---|---|
@@ -146,7 +146,7 @@ expectation that attention's exact recall should help most.
 
 ### 4.2 The headline: agreement vs. distance
 
-![SVA accuracy vs. subject–verb distance](figures/fig1_distance.png)
+![SVA accuracy vs. subject–verb distance: lines are the 5-seed mean, shaded bands the Wilson 95% CI](figures/fig1_distance.png)
 
 The clearest architectural signal is not a level difference but a **slope** difference. Binning
 SVA pairs by subject–verb distance (mean over five seeds):
@@ -166,7 +166,7 @@ decay in the same way. This dissociation is the paper's most robust agreement fi
 
 ### 4.3 Between-architecture agreement gaps are mostly not robust
 
-![Accuracy by probe type (error bars = cross-seed SD)](figures/fig2_probes.png)
+![Accuracy by probe type: bars are the 5-seed mean, error bars the cross-seed SD, dots individual seeds; note Mamba-3's wide spread](figures/fig2_probes.png)
 
 | Model | SVA | Attraction | Honorific | Discourse |
 |---|---|---|---|---|
