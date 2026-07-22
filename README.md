@@ -71,7 +71,7 @@ python paper/figures.py
 
 **Full pipeline (Colab) —** open [`notebooks/colab_driver.ipynb`](notebooks/colab_driver.ipynb),
 set the `HF_TOKEN` Colab secret, and run top to bottom: install → tokenizer →
-pretokenize → param-match → profile → train (3 archs × 2 seeds) → eval → publish to HF.
+pretokenize → param-match → profile → train (3 archs × 5 seeds) → eval → aggregate → publish to HF.
 Every long step is resumable across Colab disconnects.
 
 ## Method in one paragraph

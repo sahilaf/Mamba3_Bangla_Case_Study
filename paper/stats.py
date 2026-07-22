@@ -126,12 +126,6 @@ def print_ci_table():
                 mean, lo, hi = pooled_ci(vals, N[ncond])
                 print(f"  {m:12s} {mean*100:5.1f}%  [{lo*100:.1f}, {hi*100:.1f}]")
 
-    print("\n== SVA excluding p2-intimate ==")
-    for m in ["transformer", "mamba3"]:
-        # reconstruct per-seed SVA(-p2int) from the by-person mix is nontrivial here;
-        # we report the pre-computed pooled means with CI over n=3000*2.
-        pass
-
     print("\n== SVA by distance (per model, per bin) ==")
     for m in ["transformer", "mamba3", "hybrid"]:
         seeds = RES["sva_by_distance"][m]  # list of per-seed arrays
