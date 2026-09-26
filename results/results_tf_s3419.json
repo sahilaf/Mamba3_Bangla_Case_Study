@@ -1,0 +1,177 @@
+{
+  "model": "/content/drive/MyDrive/mamba3_bn/runs/tf_53m_s3419/ckpt_00015258.pt",
+  "results": {
+    "sva.tsv": {
+      "n": 3300,
+      "accuracy": 0.8833,
+      "breakdown": {
+        "distance": {
+          "none": {
+            "acc": 0.8848,
+            "n": 330
+          },
+          "short": {
+            "acc": 0.897,
+            "n": 330
+          },
+          "medium": {
+            "acc": 0.8917,
+            "n": 1320
+          },
+          "long": {
+            "acc": 0.8712,
+            "n": 1320
+          }
+        },
+        "tense": {
+          "pres": {
+            "acc": 0.93,
+            "n": 1100
+          },
+          "past": {
+            "acc": 0.8191,
+            "n": 1100
+          },
+          "fut": {
+            "acc": 0.9009,
+            "n": 1100
+          }
+        },
+        "subj_person": {
+          "p1": {
+            "acc": 0.9967,
+            "n": 300
+          },
+          "p2_int": {
+            "acc": 0.8667,
+            "n": 300
+          },
+          "p2_fam": {
+            "acc": 0.9433,
+            "n": 300
+          },
+          "p2_hon": {
+            "acc": 1.0,
+            "n": 300
+          },
+          "p3_ord": {
+            "acc": 0.784,
+            "n": 1500
+          },
+          "p3_hon": {
+            "acc": 0.995,
+            "n": 600
+          }
+        }
+      }
+    },
+    "attraction.tsv": {
+      "n": 1190,
+      "accuracy": 0.8429,
+      "breakdown": {
+        "distance": {
+          "attractor": {
+            "acc": 0.8429,
+            "n": 1190
+          }
+        },
+        "tense": {
+          "pres": {
+            "acc": 0.9302,
+            "n": 430
+          },
+          "past": {
+            "acc": 0.7535,
+            "n": 430
+          },
+          "fut": {
+            "acc": 0.8455,
+            "n": 330
+          }
+        },
+        "subj_person": {
+          "p3_ord": {
+            "acc": 0.79,
+            "n": 800
+          },
+          "p3_hon": {
+            "acc": 0.98,
+            "n": 300
+          },
+          "p2_fam": {
+            "acc": 0.8556,
+            "n": 90
+          }
+        }
+      }
+    },
+    "honorific.tsv": {
+      "n": 210,
+      "accuracy": 0.7286,
+      "breakdown": {
+        "distance": {
+          "none": {
+            "acc": 0.7286,
+            "n": 210
+          }
+        },
+        "tense": {
+          "pres": {
+            "acc": 0.8143,
+            "n": 70
+          },
+          "past": {
+            "acc": 0.6286,
+            "n": 70
+          },
+          "fut": {
+            "acc": 0.7429,
+            "n": 70
+          }
+        },
+        "subj_person": {
+          "p3_ord": {
+            "acc": 0.6267,
+            "n": 150
+          },
+          "p3_hon": {
+            "acc": 0.9833,
+            "n": 60
+          }
+        }
+      }
+    },
+    "discourse.tsv": {
+      "n": 90,
+      "accuracy": 0.6444,
+      "breakdown": {
+        "distance": {
+          "adjacent": {
+            "acc": 0.7778,
+            "n": 45
+          },
+          "one_filler": {
+            "acc": 0.5111,
+            "n": 45
+          }
+        },
+        "tense": {
+          "pres": {
+            "acc": 0.6444,
+            "n": 90
+          }
+        },
+        "subj_person": {
+          "p3_ord": {
+            "acc": 0.5333,
+            "n": 30
+          },
+          "p3_hon": {
+            "acc": 0.7,
+            "n": 60
+          }
+        }
+      }
+    }
+  }
+}

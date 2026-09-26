@@ -1,7 +1,9 @@
-# Local (probe generation, tests, figures): numpy/pytest/matplotlib.
+# Local (probe generation, tests, figures, statistics): no GPU needed.
 numpy
 pytest
-matplotlib   # paper/figures.py only
+matplotlib        # paper/figures.py only
+sentencepiece     # paper/tokenization_check.py only
+huggingface_hub   # paper/tokenization_check.py only (fetches the released tokenizer)
 
 # Colab / GPU training + eval (installed in the driver notebook):
 # torch (preinstalled on Colab)

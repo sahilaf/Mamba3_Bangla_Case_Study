@@ -1,10 +1,11 @@
-"""Build parameter-matched Transformer and Mamba-3 causal LMs.
+"""Build parameter-matched Transformer, Mamba-3, and hybrid causal LMs.
 
-Both models expose: model(input_ids).logits with shape (B, L, vocab).
+All models expose: model(input_ids).logits with shape (B, L, vocab).
 
 - Transformer: Llama-style decoder (RoPE, SwiGLU, RMSNorm) via HF transformers.
-- Mamba-3: official implementation via mamba_ssm.MambaLMHeadModel with
-  ssm_cfg={"layer": "Mamba3"} (SISO/Triton path by default; MIMO needs TileLang).
+- Mamba-3 / hybrid: a pre-norm RMSNorm residual tower of the official
+  mamba_ssm Mamba3 block (SISO/Triton path; MIMO needs TileLang), with causal
+  RoPE attention at cfg.attn_layer_idx for the hybrid.
 """
 
 from __future__ import annotations

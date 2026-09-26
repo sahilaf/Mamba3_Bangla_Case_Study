@@ -1,12 +1,12 @@
 """Statistical analysis for the paper: Wilson confidence intervals from the
 aggregate accuracies, and paired McNemar tests when per-pair dumps are present.
 
-  python paper/stats.py                 # Wilson CIs + significance table (no data needed)
-  python paper/stats.py --dumps DIR     # + McNemar paired tests from per-pair CSVs
+  python paper/stats.py                             # Wilson CIs + Welch tests
+  python paper/stats.py --dumps results/per_pair    # + seed-1 McNemar paired tests
 
 Per-pair CSVs are produced by:
   python -m bangla_ssm.eval_minimal_pairs ... --dump_per_pair DIR/<tag>_<probe>.csv
-(each row: id,correct). Run that for every checkpoint to enable McNemar.
+(each row: id,correct).
 """
 
 from __future__ import annotations
@@ -21,7 +21,7 @@ from pathlib import Path
 HERE = Path(__file__).resolve().parent
 RES = json.loads((HERE / "results.json").read_text(encoding="utf-8"))
 
-# pairs per condition / distance bin (both seeds share the same probe set)
+# pairs per condition / distance bin (all seeds share the same probe set)
 N = {
     "sva": 3300, "attraction": 1190, "honorific": 210, "discourse": 90,
     "sva_none": 330, "sva_short": 330, "sva_medium": 1320, "sva_long": 1320,
@@ -56,37 +56,43 @@ def welch_t(a: list[float], b: list[float]):
     t = (ma - mb) / se
     df = (va / na + vb / nb) ** 2 / (
         (va / na) ** 2 / (na - 1) + (vb / nb) ** 2 / (nb - 1))
-    # two-sided p via a Student-t survival approximation
-    x = df / (df + t * t)
-    # regularized incomplete beta I_x(df/2, 1/2) via continued fraction (good enough)
-    p = _betai(df / 2.0, 0.5, x)
+    # two-sided p = I_{df/(df+t^2)}(df/2, 1/2)
+    p = _betai(df / 2.0, 0.5, df / (df + t * t))
     return ma - mb, t, p
 
 
+def _betacf(a, b, x):
+    """Continued fraction for the incomplete beta (modified Lentz)."""
+    tiny = 1e-300
+    qab, qap, qam = a + b, a + 1.0, a - 1.0
+    c, d = 1.0, 1.0 - qab * x / qap
+    d = 1.0 / (tiny if abs(d) < tiny else d)
+    h = d
+    for m in range(1, 300):
+        m2 = 2 * m
+        for aa in (m * (b - m) * x / ((qam + m2) * (a + m2)),
+                   -(a + m) * (qab + m) * x / ((a + m2) * (qap + m2))):
+            d = 1.0 + aa * d
+            d = 1.0 / (tiny if abs(d) < tiny else d)
+            c = 1.0 + aa / c
+            c = tiny if abs(c) < tiny else c
+            h *= d * c
+        if abs(d * c - 1.0) < 3e-14:
+            break
+    return h
+
+
 def _betai(a, b, x):
+    """Regularized incomplete beta I_x(a, b)."""
     if x <= 0:
         return 0.0
     if x >= 1:
         return 1.0
-    lbeta = math.lgamma(a) + math.lgamma(b) - math.lgamma(a + b)
-    front = math.exp(math.log(x) * a + math.log(1 - x) * b - lbeta) / a
-    c, d = 1.0, 1.0 - (a + b) * x / (a + 1)
-    d = 1e-30 if abs(d) < 1e-30 else 1 / d
-    h = d
-    for i in range(1, 200):
-        m = i // 2
-        if i % 2 == 0:
-            num = m * (b - m) * x / ((a + 2 * m - 1) * (a + 2 * m))
-        else:
-            num = -(a + m) * (a + b + m) * x / ((a + 2 * m) * (a + 2 * m + 1))
-        d = 1 + num * d
-        d = 1e-30 if abs(d) < 1e-30 else 1 / d
-        c = 1 + num / (1e-30 if abs(1 + num / c) < 1e-30 else c)
-        c = 1 + num / c if abs(c) > 1e-30 else 1e-30
-        h *= d * c
-        if abs(1 - d * c) < 1e-8:
-            break
-    return front * h
+    bt = math.exp(math.lgamma(a + b) - math.lgamma(a) - math.lgamma(b)
+                  + a * math.log(x) + b * math.log(1 - x))
+    if x < (a + 1) / (a + b + 2):
+        return bt * _betacf(a, b, x) / a
+    return 1.0 - bt * _betacf(b, a, 1 - x) / b
 
 
 def print_between_arch():

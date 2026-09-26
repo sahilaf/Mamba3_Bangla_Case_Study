@@ -64,7 +64,8 @@ def _sd(xs):
 
 def save(fig, name):
     fig.savefig(OUT / f"{name}.png", bbox_inches="tight", pad_inches=0.02)
-    fig.savefig(OUT / f"{name}.pdf", bbox_inches="tight", pad_inches=0.02)
+    fig.savefig(OUT / f"{name}.pdf", bbox_inches="tight", pad_inches=0.02,
+                metadata={"CreationDate": None})
     plt.close(fig)
     print("wrote", name + ".png/.pdf")
 

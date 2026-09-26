@@ -1,0 +1,6 @@
+{
+  "ckpt": "/content/drive/MyDrive/mamba3_bn/runs/tf_53m/ckpt_00015258.pt",
+  "tokens": 19999744,
+  "nll": 3.743415,
+  "ppl": 42.242
+}

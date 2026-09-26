@@ -1,0 +1,38 @@
+cff-version: 1.2.0
+message: "If you use this code, the probe suite, or the checkpoints, please cite the paper below."
+title: "State Tracking vs. Attention in a Morphologically Rich Low-Resource Language: A Controlled Bangla Case Study with Mamba-3"
+type: software
+license: MIT
+repository-code: "https://github.com/sahilaf/Mamba3_Bangla_Case_Study"
+authors:
+  - given-names: "Sahil Al"
+    family-names: "Farib"
+    affiliation: "United International University"
+  - given-names: "Momota Ahsana"
+    family-names: "Meem"
+    affiliation: "United International University"
+  - given-names: "Sheikh Redwanul"
+    family-names: "Islam"
+    affiliation: "United International University"
+  - given-names: "Khan Md Shams"
+    family-names: "Arefin"
+    affiliation: "United International University"
+  - given-names: "Azizur Rahman"
+    family-names: "Anik"
+    affiliation: "United International University"
+preferred-citation:
+  type: conference-paper
+  title: "State Tracking vs. Attention in a Morphologically Rich Low-Resource Language: A Controlled Bangla Case Study with Mamba-3"
+  collection-title: "Proceedings of the 6th Workshop on Multilingual Representation Learning (MRL 2026)"
+  year: 2026
+  authors:
+    - given-names: "Sahil Al"
+      family-names: "Farib"
+    - given-names: "Momota Ahsana"
+      family-names: "Meem"
+    - given-names: "Sheikh Redwanul"
+      family-names: "Islam"
+    - given-names: "Khan Md Shams"
+      family-names: "Arefin"
+    - given-names: "Azizur Rahman"
+      family-names: "Anik"

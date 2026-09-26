@@ -1,5 +1,10 @@
 # Feasibility Analysis (verified 2026-07-16)
 
+> **Historical document.** Pre-experiment checks, kept for transparency. One finding changed
+> during implementation: the prebuilt `mamba-ssm` wheel's `MambaLMHeadModel` does not wire the
+> Mamba3 block, so `bangla_ssm/models.py` builds the Mamba-3 tower directly from
+> `mamba_ssm.modules.mamba3.Mamba3`.
+
 Every load-bearing assumption in the plan was checked against live sources. Verdict: **GO**, with
 three concrete plan changes (see bottom).
 

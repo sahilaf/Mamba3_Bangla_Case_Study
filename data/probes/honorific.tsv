@@ -1,0 +1,211 @@
+id	phenomenon	subj_person	wrong_person	lure_person	distance	tense	sen	wrong_sen
+honorific_00000	honorific	p3_ord	p3_hon		none	pres	সে সাধারণত কাজ করে।	সে সাধারণত কাজ করেন।
+honorific_00001	honorific	p3_ord	p3_hon		none	pres	ছেলেটি প্রায়ই কাজ করে।	ছেলেটি প্রায়ই কাজ করেন।
+honorific_00002	honorific	p3_ord	p3_hon		none	pres	মেয়েটি সাধারণত কাজ করে।	মেয়েটি সাধারণত কাজ করেন।
+honorific_00003	honorific	p3_ord	p3_hon		none	pres	আমার বন্ধু প্রতিদিন কাজ করে।	আমার বন্ধু প্রতিদিন কাজ করেন।
+honorific_00004	honorific	p3_ord	p3_hon		none	pres	রহিম সাধারণত কাজ করে।	রহিম সাধারণত কাজ করেন।
+honorific_00005	honorific	p3_hon	p3_ord		none	pres	তিনি প্রতিদিন কাজ করেন।	তিনি প্রতিদিন কাজ করে।
+honorific_00006	honorific	p3_hon	p3_ord		none	pres	উনি প্রতিদিন কাজ করেন।	উনি প্রতিদিন কাজ করে।
+honorific_00007	honorific	p3_ord	p3_hon		none	past	সে গতকাল কাজ করলো।	সে গতকাল কাজ করলেন।
+honorific_00008	honorific	p3_ord	p3_hon		none	past	ছেলেটি কাল সন্ধ্যায় কাজ করলো।	ছেলেটি কাল সন্ধ্যায় কাজ করলেন।
+honorific_00009	honorific	p3_ord	p3_hon		none	past	মেয়েটি গত সপ্তাহে কাজ করলো।	মেয়েটি গত সপ্তাহে কাজ করলেন।
+honorific_00010	honorific	p3_ord	p3_hon		none	past	আমার বন্ধু কাল সন্ধ্যায় কাজ করলো।	আমার বন্ধু কাল সন্ধ্যায় কাজ করলেন।
+honorific_00011	honorific	p3_ord	p3_hon		none	past	রহিম গতকাল কাজ করলো।	রহিম গতকাল কাজ করলেন।
+honorific_00012	honorific	p3_hon	p3_ord		none	past	তিনি গতকাল কাজ করলেন।	তিনি গতকাল কাজ করলো।
+honorific_00013	honorific	p3_hon	p3_ord		none	past	উনি গত সপ্তাহে কাজ করলেন।	উনি গত সপ্তাহে কাজ করলো।
+honorific_00014	honorific	p3_ord	p3_hon		none	fut	সে কিছুদিন পরে কাজ করবে।	সে কিছুদিন পরে কাজ করবেন।
+honorific_00015	honorific	p3_ord	p3_hon		none	fut	ছেলেটি আগামী সপ্তাহে কাজ করবে।	ছেলেটি আগামী সপ্তাহে কাজ করবেন।
+honorific_00016	honorific	p3_ord	p3_hon		none	fut	মেয়েটি কিছুদিন পরে কাজ করবে।	মেয়েটি কিছুদিন পরে কাজ করবেন।
+honorific_00017	honorific	p3_ord	p3_hon		none	fut	আমার বন্ধু আগামী সপ্তাহে কাজ করবে।	আমার বন্ধু আগামী সপ্তাহে কাজ করবেন।
+honorific_00018	honorific	p3_ord	p3_hon		none	fut	রহিম আগামী সপ্তাহে কাজ করবে।	রহিম আগামী সপ্তাহে কাজ করবেন।
+honorific_00019	honorific	p3_hon	p3_ord		none	fut	তিনি আগামী সপ্তাহে কাজ করবেন।	তিনি আগামী সপ্তাহে কাজ করবে।
+honorific_00020	honorific	p3_hon	p3_ord		none	fut	উনি কিছুদিন পরে কাজ করবেন।	উনি কিছুদিন পরে কাজ করবে।
+honorific_00021	honorific	p3_ord	p3_hon		none	pres	সে প্রায়ই স্কুলে যায়।	সে প্রায়ই স্কুলে যান।
+honorific_00022	honorific	p3_ord	p3_hon		none	pres	ছেলেটি সাধারণত স্কুলে যায়।	ছেলেটি সাধারণত স্কুলে যান।
+honorific_00023	honorific	p3_ord	p3_hon		none	pres	মেয়েটি প্রতিদিন স্কুলে যায়।	মেয়েটি প্রতিদিন স্কুলে যান।
+honorific_00024	honorific	p3_ord	p3_hon		none	pres	আমার বন্ধু সাধারণত স্কুলে যায়।	আমার বন্ধু সাধারণত স্কুলে যান।
+honorific_00025	honorific	p3_ord	p3_hon		none	pres	রহিম সাধারণত স্কুলে যায়।	রহিম সাধারণত স্কুলে যান।
+honorific_00026	honorific	p3_hon	p3_ord		none	pres	তিনি সাধারণত স্কুলে যান।	তিনি সাধারণত স্কুলে যায়।
+honorific_00027	honorific	p3_hon	p3_ord		none	pres	উনি প্রায়ই স্কুলে যান।	উনি প্রায়ই স্কুলে যায়।
+honorific_00028	honorific	p3_ord	p3_hon		none	past	সে গত সপ্তাহে স্কুলে গেলো।	সে গত সপ্তাহে স্কুলে গেলেন।
+honorific_00029	honorific	p3_ord	p3_hon		none	past	ছেলেটি গত সপ্তাহে স্কুলে গেলো।	ছেলেটি গত সপ্তাহে স্কুলে গেলেন।
+honorific_00030	honorific	p3_ord	p3_hon		none	past	মেয়েটি কাল সন্ধ্যায় স্কুলে গেলো।	মেয়েটি কাল সন্ধ্যায় স্কুলে গেলেন।
+honorific_00031	honorific	p3_ord	p3_hon		none	past	আমার বন্ধু কাল সন্ধ্যায় স্কুলে গেলো।	আমার বন্ধু কাল সন্ধ্যায় স্কুলে গেলেন।
+honorific_00032	honorific	p3_ord	p3_hon		none	past	রহিম কাল সন্ধ্যায় স্কুলে গেলো।	রহিম কাল সন্ধ্যায় স্কুলে গেলেন।
+honorific_00033	honorific	p3_hon	p3_ord		none	past	তিনি গত সপ্তাহে স্কুলে গেলেন।	তিনি গত সপ্তাহে স্কুলে গেলো।
+honorific_00034	honorific	p3_hon	p3_ord		none	past	উনি গতকাল স্কুলে গেলেন।	উনি গতকাল স্কুলে গেলো।
+honorific_00035	honorific	p3_ord	p3_hon		none	fut	সে কিছুদিন পরে স্কুলে যাবে।	সে কিছুদিন পরে স্কুলে যাবেন।
+honorific_00036	honorific	p3_ord	p3_hon		none	fut	ছেলেটি আগামী সপ্তাহে স্কুলে যাবে।	ছেলেটি আগামী সপ্তাহে স্কুলে যাবেন।
+honorific_00037	honorific	p3_ord	p3_hon		none	fut	মেয়েটি আগামীকাল স্কুলে যাবে।	মেয়েটি আগামীকাল স্কুলে যাবেন।
+honorific_00038	honorific	p3_ord	p3_hon		none	fut	আমার বন্ধু আগামী সপ্তাহে স্কুলে যাবে।	আমার বন্ধু আগামী সপ্তাহে স্কুলে যাবেন।
+honorific_00039	honorific	p3_ord	p3_hon		none	fut	রহিম আগামী সপ্তাহে স্কুলে যাবে।	রহিম আগামী সপ্তাহে স্কুলে যাবেন।
+honorific_00040	honorific	p3_hon	p3_ord		none	fut	তিনি কিছুদিন পরে স্কুলে যাবেন।	তিনি কিছুদিন পরে স্কুলে যাবে।
+honorific_00041	honorific	p3_hon	p3_ord		none	fut	উনি আগামী সপ্তাহে স্কুলে যাবেন।	উনি আগামী সপ্তাহে স্কুলে যাবে।
+honorific_00042	honorific	p3_ord	p3_hon		none	pres	সে প্রতিদিন ভাত খায়।	সে প্রতিদিন ভাত খান।
+honorific_00043	honorific	p3_ord	p3_hon		none	pres	ছেলেটি সাধারণত ভাত খায়।	ছেলেটি সাধারণত ভাত খান।
+honorific_00044	honorific	p3_ord	p3_hon		none	pres	মেয়েটি প্রায়ই ভাত খায়।	মেয়েটি প্রায়ই ভাত খান।
+honorific_00045	honorific	p3_ord	p3_hon		none	pres	আমার বন্ধু সাধারণত ভাত খায়।	আমার বন্ধু সাধারণত ভাত খান।
+honorific_00046	honorific	p3_ord	p3_hon		none	pres	রহিম সাধারণত ভাত খায়।	রহিম সাধারণত ভাত খান।
+honorific_00047	honorific	p3_hon	p3_ord		none	pres	তিনি প্রায়ই ভাত খান।	তিনি প্রায়ই ভাত খায়।
+honorific_00048	honorific	p3_hon	p3_ord		none	pres	উনি প্রতিদিন ভাত খান।	উনি প্রতিদিন ভাত খায়।
+honorific_00049	honorific	p3_ord	p3_hon		none	past	সে কাল সন্ধ্যায় ভাত খেলো।	সে কাল সন্ধ্যায় ভাত খেলেন।
+honorific_00050	honorific	p3_ord	p3_hon		none	past	ছেলেটি গতকাল ভাত খেলো।	ছেলেটি গতকাল ভাত খেলেন।
+honorific_00051	honorific	p3_ord	p3_hon		none	past	মেয়েটি কাল সন্ধ্যায় ভাত খেলো।	মেয়েটি কাল সন্ধ্যায় ভাত খেলেন।
+honorific_00052	honorific	p3_ord	p3_hon		none	past	আমার বন্ধু গত সপ্তাহে ভাত খেলো।	আমার বন্ধু গত সপ্তাহে ভাত খেলেন।
+honorific_00053	honorific	p3_ord	p3_hon		none	past	রহিম কাল সন্ধ্যায় ভাত খেলো।	রহিম কাল সন্ধ্যায় ভাত খেলেন।
+honorific_00054	honorific	p3_hon	p3_ord		none	past	তিনি গতকাল ভাত খেলেন।	তিনি গতকাল ভাত খেলো।
+honorific_00055	honorific	p3_hon	p3_ord		none	past	উনি কাল সন্ধ্যায় ভাত খেলেন।	উনি কাল সন্ধ্যায় ভাত খেলো।
+honorific_00056	honorific	p3_ord	p3_hon		none	fut	সে আগামী সপ্তাহে ভাত খাবে।	সে আগামী সপ্তাহে ভাত খাবেন।
+honorific_00057	honorific	p3_ord	p3_hon		none	fut	ছেলেটি আগামীকাল ভাত খাবে।	ছেলেটি আগামীকাল ভাত খাবেন।
+honorific_00058	honorific	p3_ord	p3_hon		none	fut	মেয়েটি কিছুদিন পরে ভাত খাবে।	মেয়েটি কিছুদিন পরে ভাত খাবেন।
+honorific_00059	honorific	p3_ord	p3_hon		none	fut	আমার বন্ধু আগামীকাল ভাত খাবে।	আমার বন্ধু আগামীকাল ভাত খাবেন।
+honorific_00060	honorific	p3_ord	p3_hon		none	fut	রহিম কিছুদিন পরে ভাত খাবে।	রহিম কিছুদিন পরে ভাত খাবেন।
+honorific_00061	honorific	p3_hon	p3_ord		none	fut	তিনি আগামী সপ্তাহে ভাত খাবেন।	তিনি আগামী সপ্তাহে ভাত খাবে।
+honorific_00062	honorific	p3_hon	p3_ord		none	fut	উনি কিছুদিন পরে ভাত খাবেন।	উনি কিছুদিন পরে ভাত খাবে।
+honorific_00063	honorific	p3_ord	p3_hon		none	pres	সে প্রায়ই টেলিভিশন দেখে।	সে প্রায়ই টেলিভিশন দেখেন।
+honorific_00064	honorific	p3_ord	p3_hon		none	pres	ছেলেটি প্রতিদিন টেলিভিশন দেখে।	ছেলেটি প্রতিদিন টেলিভিশন দেখেন।
+honorific_00065	honorific	p3_ord	p3_hon		none	pres	মেয়েটি প্রায়ই টেলিভিশন দেখে।	মেয়েটি প্রায়ই টেলিভিশন দেখেন।
+honorific_00066	honorific	p3_ord	p3_hon		none	pres	আমার বন্ধু প্রতিদিন টেলিভিশন দেখে।	আমার বন্ধু প্রতিদিন টেলিভিশন দেখেন।
+honorific_00067	honorific	p3_ord	p3_hon		none	pres	রহিম সাধারণত টেলিভিশন দেখে।	রহিম সাধারণত টেলিভিশন দেখেন।
+honorific_00068	honorific	p3_hon	p3_ord		none	pres	তিনি প্রায়ই টেলিভিশন দেখেন।	তিনি প্রায়ই টেলিভিশন দেখে।
+honorific_00069	honorific	p3_hon	p3_ord		none	pres	উনি প্রতিদিন টেলিভিশন দেখেন।	উনি প্রতিদিন টেলিভিশন দেখে।
+honorific_00070	honorific	p3_ord	p3_hon		none	past	সে গতকাল টেলিভিশন দেখলো।	সে গতকাল টেলিভিশন দেখলেন।
+honorific_00071	honorific	p3_ord	p3_hon		none	past	ছেলেটি গত সপ্তাহে টেলিভিশন দেখলো।	ছেলেটি গত সপ্তাহে টেলিভিশন দেখলেন।
+honorific_00072	honorific	p3_ord	p3_hon		none	past	মেয়েটি কাল সন্ধ্যায় টেলিভিশন দেখলো।	মেয়েটি কাল সন্ধ্যায় টেলিভিশন দেখলেন।
+honorific_00073	honorific	p3_ord	p3_hon		none	past	আমার বন্ধু গতকাল টেলিভিশন দেখলো।	আমার বন্ধু গতকাল টেলিভিশন দেখলেন।
+honorific_00074	honorific	p3_ord	p3_hon		none	past	রহিম গত সপ্তাহে টেলিভিশন দেখলো।	রহিম গত সপ্তাহে টেলিভিশন দেখলেন।
+honorific_00075	honorific	p3_hon	p3_ord		none	past	তিনি কাল সন্ধ্যায় টেলিভিশন দেখলেন।	তিনি কাল সন্ধ্যায় টেলিভিশন দেখলো।
+honorific_00076	honorific	p3_hon	p3_ord		none	past	উনি গত সপ্তাহে টেলিভিশন দেখলেন।	উনি গত সপ্তাহে টেলিভিশন দেখলো।
+honorific_00077	honorific	p3_ord	p3_hon		none	fut	সে আগামীকাল টেলিভিশন দেখবে।	সে আগামীকাল টেলিভিশন দেখবেন।
+honorific_00078	honorific	p3_ord	p3_hon		none	fut	ছেলেটি কিছুদিন পরে টেলিভিশন দেখবে।	ছেলেটি কিছুদিন পরে টেলিভিশন দেখবেন।
+honorific_00079	honorific	p3_ord	p3_hon		none	fut	মেয়েটি কিছুদিন পরে টেলিভিশন দেখবে।	মেয়েটি কিছুদিন পরে টেলিভিশন দেখবেন।
+honorific_00080	honorific	p3_ord	p3_hon		none	fut	আমার বন্ধু আগামী সপ্তাহে টেলিভিশন দেখবে।	আমার বন্ধু আগামী সপ্তাহে টেলিভিশন দেখবেন।
+honorific_00081	honorific	p3_ord	p3_hon		none	fut	রহিম আগামী সপ্তাহে টেলিভিশন দেখবে।	রহিম আগামী সপ্তাহে টেলিভিশন দেখবেন।
+honorific_00082	honorific	p3_hon	p3_ord		none	fut	তিনি আগামীকাল টেলিভিশন দেখবেন।	তিনি আগামীকাল টেলিভিশন দেখবে।
+honorific_00083	honorific	p3_hon	p3_ord		none	fut	উনি কিছুদিন পরে টেলিভিশন দেখবেন।	উনি কিছুদিন পরে টেলিভিশন দেখবে।
+honorific_00084	honorific	p3_ord	p3_hon		none	pres	সে সাধারণত চিঠি লেখে।	সে সাধারণত চিঠি লেখেন।
+honorific_00085	honorific	p3_ord	p3_hon		none	pres	ছেলেটি সাধারণত চিঠি লেখে।	ছেলেটি সাধারণত চিঠি লেখেন।
+honorific_00086	honorific	p3_ord	p3_hon		none	pres	মেয়েটি প্রায়ই চিঠি লেখে।	মেয়েটি প্রায়ই চিঠি লেখেন।
+honorific_00087	honorific	p3_ord	p3_hon		none	pres	আমার বন্ধু সাধারণত চিঠি লেখে।	আমার বন্ধু সাধারণত চিঠি লেখেন।
+honorific_00088	honorific	p3_ord	p3_hon		none	pres	রহিম প্রায়ই চিঠি লেখে।	রহিম প্রায়ই চিঠি লেখেন।
+honorific_00089	honorific	p3_hon	p3_ord		none	pres	তিনি প্রতিদিন চিঠি লেখেন।	তিনি প্রতিদিন চিঠি লেখে।
+honorific_00090	honorific	p3_hon	p3_ord		none	pres	উনি সাধারণত চিঠি লেখেন।	উনি সাধারণত চিঠি লেখে।
+honorific_00091	honorific	p3_ord	p3_hon		none	past	সে কাল সন্ধ্যায় চিঠি লিখলো।	সে কাল সন্ধ্যায় চিঠি লিখলেন।
+honorific_00092	honorific	p3_ord	p3_hon		none	past	ছেলেটি গতকাল চিঠি লিখলো।	ছেলেটি গতকাল চিঠি লিখলেন।
+honorific_00093	honorific	p3_ord	p3_hon		none	past	মেয়েটি কাল সন্ধ্যায় চিঠি লিখলো।	মেয়েটি কাল সন্ধ্যায় চিঠি লিখলেন।
+honorific_00094	honorific	p3_ord	p3_hon		none	past	আমার বন্ধু গত সপ্তাহে চিঠি লিখলো।	আমার বন্ধু গত সপ্তাহে চিঠি লিখলেন।
+honorific_00095	honorific	p3_ord	p3_hon		none	past	রহিম গতকাল চিঠি লিখলো।	রহিম গতকাল চিঠি লিখলেন।
+honorific_00096	honorific	p3_hon	p3_ord		none	past	তিনি গতকাল চিঠি লিখলেন।	তিনি গতকাল চিঠি লিখলো।
+honorific_00097	honorific	p3_hon	p3_ord		none	past	উনি গতকাল চিঠি লিখলেন।	উনি গতকাল চিঠি লিখলো।
+honorific_00098	honorific	p3_ord	p3_hon		none	fut	সে আগামীকাল চিঠি লিখবে।	সে আগামীকাল চিঠি লিখবেন।
+honorific_00099	honorific	p3_ord	p3_hon		none	fut	ছেলেটি আগামী সপ্তাহে চিঠি লিখবে।	ছেলেটি আগামী সপ্তাহে চিঠি লিখবেন।
+honorific_00100	honorific	p3_ord	p3_hon		none	fut	মেয়েটি আগামীকাল চিঠি লিখবে।	মেয়েটি আগামীকাল চিঠি লিখবেন।
+honorific_00101	honorific	p3_ord	p3_hon		none	fut	আমার বন্ধু কিছুদিন পরে চিঠি লিখবে।	আমার বন্ধু কিছুদিন পরে চিঠি লিখবেন।
+honorific_00102	honorific	p3_ord	p3_hon		none	fut	রহিম কিছুদিন পরে চিঠি লিখবে।	রহিম কিছুদিন পরে চিঠি লিখবেন।
+honorific_00103	honorific	p3_hon	p3_ord		none	fut	তিনি আগামী সপ্তাহে চিঠি লিখবেন।	তিনি আগামী সপ্তাহে চিঠি লিখবে।
+honorific_00104	honorific	p3_hon	p3_ord		none	fut	উনি কিছুদিন পরে চিঠি লিখবেন।	উনি কিছুদিন পরে চিঠি লিখবে।
+honorific_00105	honorific	p3_ord	p3_hon		none	pres	সে প্রায়ই বই পড়ে।	সে প্রায়ই বই পড়েন।
+honorific_00106	honorific	p3_ord	p3_hon		none	pres	ছেলেটি প্রায়ই বই পড়ে।	ছেলেটি প্রায়ই বই পড়েন।
+honorific_00107	honorific	p3_ord	p3_hon		none	pres	মেয়েটি প্রায়ই বই পড়ে।	মেয়েটি প্রায়ই বই পড়েন।
+honorific_00108	honorific	p3_ord	p3_hon		none	pres	আমার বন্ধু প্রতিদিন বই পড়ে।	আমার বন্ধু প্রতিদিন বই পড়েন।
+honorific_00109	honorific	p3_ord	p3_hon		none	pres	রহিম প্রতিদিন বই পড়ে।	রহিম প্রতিদিন বই পড়েন।
+honorific_00110	honorific	p3_hon	p3_ord		none	pres	তিনি প্রতিদিন বই পড়েন।	তিনি প্রতিদিন বই পড়ে।
+honorific_00111	honorific	p3_hon	p3_ord		none	pres	উনি প্রায়ই বই পড়েন।	উনি প্রায়ই বই পড়ে।
+honorific_00112	honorific	p3_ord	p3_hon		none	past	সে গত সপ্তাহে বই পড়লো।	সে গত সপ্তাহে বই পড়লেন।
+honorific_00113	honorific	p3_ord	p3_hon		none	past	ছেলেটি গতকাল বই পড়লো।	ছেলেটি গতকাল বই পড়লেন।
+honorific_00114	honorific	p3_ord	p3_hon		none	past	মেয়েটি কাল সন্ধ্যায় বই পড়লো।	মেয়েটি কাল সন্ধ্যায় বই পড়লেন।
+honorific_00115	honorific	p3_ord	p3_hon		none	past	আমার বন্ধু কাল সন্ধ্যায় বই পড়লো।	আমার বন্ধু কাল সন্ধ্যায় বই পড়লেন।
+honorific_00116	honorific	p3_ord	p3_hon		none	past	রহিম গতকাল বই পড়লো।	রহিম গতকাল বই পড়লেন।
+honorific_00117	honorific	p3_hon	p3_ord		none	past	তিনি গতকাল বই পড়লেন।	তিনি গতকাল বই পড়লো।
+honorific_00118	honorific	p3_hon	p3_ord		none	past	উনি কাল সন্ধ্যায় বই পড়লেন।	উনি কাল সন্ধ্যায় বই পড়লো।
+honorific_00119	honorific	p3_ord	p3_hon		none	fut	সে আগামীকাল বই পড়বে।	সে আগামীকাল বই পড়বেন।
+honorific_00120	honorific	p3_ord	p3_hon		none	fut	ছেলেটি কিছুদিন পরে বই পড়বে।	ছেলেটি কিছুদিন পরে বই পড়বেন।
+honorific_00121	honorific	p3_ord	p3_hon		none	fut	মেয়েটি আগামীকাল বই পড়বে।	মেয়েটি আগামীকাল বই পড়বেন।
+honorific_00122	honorific	p3_ord	p3_hon		none	fut	আমার বন্ধু আগামীকাল বই পড়বে।	আমার বন্ধু আগামীকাল বই পড়বেন।
+honorific_00123	honorific	p3_ord	p3_hon		none	fut	রহিম আগামী সপ্তাহে বই পড়বে।	রহিম আগামী সপ্তাহে বই পড়বেন।
+honorific_00124	honorific	p3_hon	p3_ord		none	fut	তিনি কিছুদিন পরে বই পড়বেন।	তিনি কিছুদিন পরে বই পড়বে।
+honorific_00125	honorific	p3_hon	p3_ord		none	fut	উনি আগামীকাল বই পড়বেন।	উনি আগামীকাল বই পড়বে।
+honorific_00126	honorific	p3_ord	p3_hon		none	pres	সে প্রায়ই কথা বলে।	সে প্রায়ই কথা বলেন।
+honorific_00127	honorific	p3_ord	p3_hon		none	pres	ছেলেটি প্রতিদিন কথা বলে।	ছেলেটি প্রতিদিন কথা বলেন।
+honorific_00128	honorific	p3_ord	p3_hon		none	pres	মেয়েটি প্রায়ই কথা বলে।	মেয়েটি প্রায়ই কথা বলেন।
+honorific_00129	honorific	p3_ord	p3_hon		none	pres	আমার বন্ধু প্রায়ই কথা বলে।	আমার বন্ধু প্রায়ই কথা বলেন।
+honorific_00130	honorific	p3_ord	p3_hon		none	pres	রহিম সাধারণত কথা বলে।	রহিম সাধারণত কথা বলেন।
+honorific_00131	honorific	p3_hon	p3_ord		none	pres	তিনি সাধারণত কথা বলেন।	তিনি সাধারণত কথা বলে।
+honorific_00132	honorific	p3_hon	p3_ord		none	pres	উনি সাধারণত কথা বলেন।	উনি সাধারণত কথা বলে।
+honorific_00133	honorific	p3_ord	p3_hon		none	past	সে কাল সন্ধ্যায় কথা বললো।	সে কাল সন্ধ্যায় কথা বললেন।
+honorific_00134	honorific	p3_ord	p3_hon		none	past	ছেলেটি গত সপ্তাহে কথা বললো।	ছেলেটি গত সপ্তাহে কথা বললেন।
+honorific_00135	honorific	p3_ord	p3_hon		none	past	মেয়েটি গত সপ্তাহে কথা বললো।	মেয়েটি গত সপ্তাহে কথা বললেন।
+honorific_00136	honorific	p3_ord	p3_hon		none	past	আমার বন্ধু কাল সন্ধ্যায় কথা বললো।	আমার বন্ধু কাল সন্ধ্যায় কথা বললেন।
+honorific_00137	honorific	p3_ord	p3_hon		none	past	রহিম কাল সন্ধ্যায় কথা বললো।	রহিম কাল সন্ধ্যায় কথা বললেন।
+honorific_00138	honorific	p3_hon	p3_ord		none	past	তিনি কাল সন্ধ্যায় কথা বললেন।	তিনি কাল সন্ধ্যায় কথা বললো।
+honorific_00139	honorific	p3_hon	p3_ord		none	past	উনি গত সপ্তাহে কথা বললেন।	উনি গত সপ্তাহে কথা বললো।
+honorific_00140	honorific	p3_ord	p3_hon		none	fut	সে আগামী সপ্তাহে কথা বলবে।	সে আগামী সপ্তাহে কথা বলবেন।
+honorific_00141	honorific	p3_ord	p3_hon		none	fut	ছেলেটি আগামী সপ্তাহে কথা বলবে।	ছেলেটি আগামী সপ্তাহে কথা বলবেন।
+honorific_00142	honorific	p3_ord	p3_hon		none	fut	মেয়েটি আগামী সপ্তাহে কথা বলবে।	মেয়েটি আগামী সপ্তাহে কথা বলবেন।
+honorific_00143	honorific	p3_ord	p3_hon		none	fut	আমার বন্ধু কিছুদিন পরে কথা বলবে।	আমার বন্ধু কিছুদিন পরে কথা বলবেন।
+honorific_00144	honorific	p3_ord	p3_hon		none	fut	রহিম আগামী সপ্তাহে কথা বলবে।	রহিম আগামী সপ্তাহে কথা বলবেন।
+honorific_00145	honorific	p3_hon	p3_ord		none	fut	তিনি আগামী সপ্তাহে কথা বলবেন।	তিনি আগামী সপ্তাহে কথা বলবে।
+honorific_00146	honorific	p3_hon	p3_ord		none	fut	উনি আগামীকাল কথা বলবেন।	উনি আগামীকাল কথা বলবে।
+honorific_00147	honorific	p3_ord	p3_hon		none	pres	সে প্রতিদিন বাড়িতে আসে।	সে প্রতিদিন বাড়িতে আসেন।
+honorific_00148	honorific	p3_ord	p3_hon		none	pres	ছেলেটি সাধারণত বাড়িতে আসে।	ছেলেটি সাধারণত বাড়িতে আসেন।
+honorific_00149	honorific	p3_ord	p3_hon		none	pres	মেয়েটি প্রতিদিন বাড়িতে আসে।	মেয়েটি প্রতিদিন বাড়িতে আসেন।
+honorific_00150	honorific	p3_ord	p3_hon		none	pres	আমার বন্ধু প্রায়ই বাড়িতে আসে।	আমার বন্ধু প্রায়ই বাড়িতে আসেন।
+honorific_00151	honorific	p3_ord	p3_hon		none	pres	রহিম প্রায়ই বাড়িতে আসে।	রহিম প্রায়ই বাড়িতে আসেন।
+honorific_00152	honorific	p3_hon	p3_ord		none	pres	তিনি সাধারণত বাড়িতে আসেন।	তিনি সাধারণত বাড়িতে আসে।
+honorific_00153	honorific	p3_hon	p3_ord		none	pres	উনি প্রায়ই বাড়িতে আসেন।	উনি প্রায়ই বাড়িতে আসে।
+honorific_00154	honorific	p3_ord	p3_hon		none	past	সে কাল সন্ধ্যায় বাড়িতে আসলো।	সে কাল সন্ধ্যায় বাড়িতে আসলেন।
+honorific_00155	honorific	p3_ord	p3_hon		none	past	ছেলেটি গতকাল বাড়িতে আসলো।	ছেলেটি গতকাল বাড়িতে আসলেন।
+honorific_00156	honorific	p3_ord	p3_hon		none	past	মেয়েটি গতকাল বাড়িতে আসলো।	মেয়েটি গতকাল বাড়িতে আসলেন।
+honorific_00157	honorific	p3_ord	p3_hon		none	past	আমার বন্ধু কাল সন্ধ্যায় বাড়িতে আসলো।	আমার বন্ধু কাল সন্ধ্যায় বাড়িতে আসলেন।
+honorific_00158	honorific	p3_ord	p3_hon		none	past	রহিম গত সপ্তাহে বাড়িতে আসলো।	রহিম গত সপ্তাহে বাড়িতে আসলেন।
+honorific_00159	honorific	p3_hon	p3_ord		none	past	তিনি কাল সন্ধ্যায় বাড়িতে আসলেন।	তিনি কাল সন্ধ্যায় বাড়িতে আসলো।
+honorific_00160	honorific	p3_hon	p3_ord		none	past	উনি গতকাল বাড়িতে আসলেন।	উনি গতকাল বাড়িতে আসলো।
+honorific_00161	honorific	p3_ord	p3_hon		none	fut	সে কিছুদিন পরে বাড়িতে আসবে।	সে কিছুদিন পরে বাড়িতে আসবেন।
+honorific_00162	honorific	p3_ord	p3_hon		none	fut	ছেলেটি আগামী সপ্তাহে বাড়িতে আসবে।	ছেলেটি আগামী সপ্তাহে বাড়িতে আসবেন।
+honorific_00163	honorific	p3_ord	p3_hon		none	fut	মেয়েটি আগামী সপ্তাহে বাড়িতে আসবে।	মেয়েটি আগামী সপ্তাহে বাড়িতে আসবেন।
+honorific_00164	honorific	p3_ord	p3_hon		none	fut	আমার বন্ধু আগামীকাল বাড়িতে আসবে।	আমার বন্ধু আগামীকাল বাড়িতে আসবেন।
+honorific_00165	honorific	p3_ord	p3_hon		none	fut	রহিম কিছুদিন পরে বাড়িতে আসবে।	রহিম কিছুদিন পরে বাড়িতে আসবেন।
+honorific_00166	honorific	p3_hon	p3_ord		none	fut	তিনি আগামী সপ্তাহে বাড়িতে আসবেন।	তিনি আগামী সপ্তাহে বাড়িতে আসবে।
+honorific_00167	honorific	p3_hon	p3_ord		none	fut	উনি আগামীকাল বাড়িতে আসবেন।	উনি আগামীকাল বাড়িতে আসবে।
+honorific_00168	honorific	p3_ord	p3_hon		none	pres	সে সাধারণত ঢাকায় থাকে।	সে সাধারণত ঢাকায় থাকেন।
+honorific_00169	honorific	p3_ord	p3_hon		none	pres	ছেলেটি প্রতিদিন ঢাকায় থাকে।	ছেলেটি প্রতিদিন ঢাকায় থাকেন।
+honorific_00170	honorific	p3_ord	p3_hon		none	pres	মেয়েটি প্রায়ই ঢাকায় থাকে।	মেয়েটি প্রায়ই ঢাকায় থাকেন।
+honorific_00171	honorific	p3_ord	p3_hon		none	pres	আমার বন্ধু প্রায়ই ঢাকায় থাকে।	আমার বন্ধু প্রায়ই ঢাকায় থাকেন।
+honorific_00172	honorific	p3_ord	p3_hon		none	pres	রহিম প্রতিদিন ঢাকায় থাকে।	রহিম প্রতিদিন ঢাকায় থাকেন।
+honorific_00173	honorific	p3_hon	p3_ord		none	pres	তিনি প্রায়ই ঢাকায় থাকেন।	তিনি প্রায়ই ঢাকায় থাকে।
+honorific_00174	honorific	p3_hon	p3_ord		none	pres	উনি সাধারণত ঢাকায় থাকেন।	উনি সাধারণত ঢাকায় থাকে।
+honorific_00175	honorific	p3_ord	p3_hon		none	past	সে কাল সন্ধ্যায় ঢাকায় থাকলো।	সে কাল সন্ধ্যায় ঢাকায় থাকলেন।
+honorific_00176	honorific	p3_ord	p3_hon		none	past	ছেলেটি গত সপ্তাহে ঢাকায় থাকলো।	ছেলেটি গত সপ্তাহে ঢাকায় থাকলেন।
+honorific_00177	honorific	p3_ord	p3_hon		none	past	মেয়েটি গতকাল ঢাকায় থাকলো।	মেয়েটি গতকাল ঢাকায় থাকলেন।
+honorific_00178	honorific	p3_ord	p3_hon		none	past	আমার বন্ধু গত সপ্তাহে ঢাকায় থাকলো।	আমার বন্ধু গত সপ্তাহে ঢাকায় থাকলেন।
+honorific_00179	honorific	p3_ord	p3_hon		none	past	রহিম গতকাল ঢাকায় থাকলো।	রহিম গতকাল ঢাকায় থাকলেন।
+honorific_00180	honorific	p3_hon	p3_ord		none	past	তিনি কাল সন্ধ্যায় ঢাকায় থাকলেন।	তিনি কাল সন্ধ্যায় ঢাকায় থাকলো।
+honorific_00181	honorific	p3_hon	p3_ord		none	past	উনি গতকাল ঢাকায় থাকলেন।	উনি গতকাল ঢাকায় থাকলো।
+honorific_00182	honorific	p3_ord	p3_hon		none	fut	সে আগামী সপ্তাহে ঢাকায় থাকবে।	সে আগামী সপ্তাহে ঢাকায় থাকবেন।
+honorific_00183	honorific	p3_ord	p3_hon		none	fut	ছেলেটি আগামীকাল ঢাকায় থাকবে।	ছেলেটি আগামীকাল ঢাকায় থাকবেন।
+honorific_00184	honorific	p3_ord	p3_hon		none	fut	মেয়েটি আগামী সপ্তাহে ঢাকায় থাকবে।	মেয়েটি আগামী সপ্তাহে ঢাকায় থাকবেন।
+honorific_00185	honorific	p3_ord	p3_hon		none	fut	আমার বন্ধু আগামী সপ্তাহে ঢাকায় থাকবে।	আমার বন্ধু আগামী সপ্তাহে ঢাকায় থাকবেন।
+honorific_00186	honorific	p3_ord	p3_hon		none	fut	রহিম আগামীকাল ঢাকায় থাকবে।	রহিম আগামীকাল ঢাকায় থাকবেন।
+honorific_00187	honorific	p3_hon	p3_ord		none	fut	তিনি আগামীকাল ঢাকায় থাকবেন।	তিনি আগামীকাল ঢাকায় থাকবে।
+honorific_00188	honorific	p3_hon	p3_ord		none	fut	উনি কিছুদিন পরে ঢাকায় থাকবেন।	উনি কিছুদিন পরে ঢাকায় থাকবে।
+honorific_00189	honorific	p3_ord	p3_hon		none	pres	সে প্রায়ই গান শেখে।	সে প্রায়ই গান শেখেন।
+honorific_00190	honorific	p3_ord	p3_hon		none	pres	ছেলেটি সাধারণত গান শেখে।	ছেলেটি সাধারণত গান শেখেন।
+honorific_00191	honorific	p3_ord	p3_hon		none	pres	মেয়েটি সাধারণত গান শেখে।	মেয়েটি সাধারণত গান শেখেন।
+honorific_00192	honorific	p3_ord	p3_hon		none	pres	আমার বন্ধু প্রায়ই গান শেখে।	আমার বন্ধু প্রায়ই গান শেখেন।
+honorific_00193	honorific	p3_ord	p3_hon		none	pres	রহিম প্রায়ই গান শেখে।	রহিম প্রায়ই গান শেখেন।
+honorific_00194	honorific	p3_hon	p3_ord		none	pres	তিনি প্রতিদিন গান শেখেন।	তিনি প্রতিদিন গান শেখে।
+honorific_00195	honorific	p3_hon	p3_ord		none	pres	উনি প্রতিদিন গান শেখেন।	উনি প্রতিদিন গান শেখে।
+honorific_00196	honorific	p3_ord	p3_hon		none	past	সে গতকাল গান শিখল।	সে গতকাল গান শিখলেন।
+honorific_00197	honorific	p3_ord	p3_hon		none	past	ছেলেটি কাল সন্ধ্যায় গান শিখল।	ছেলেটি কাল সন্ধ্যায় গান শিখলেন।
+honorific_00198	honorific	p3_ord	p3_hon		none	past	মেয়েটি গত সপ্তাহে গান শিখল।	মেয়েটি গত সপ্তাহে গান শিখলেন।
+honorific_00199	honorific	p3_ord	p3_hon		none	past	আমার বন্ধু গতকাল গান শিখল।	আমার বন্ধু গতকাল গান শিখলেন।
+honorific_00200	honorific	p3_ord	p3_hon		none	past	রহিম গতকাল গান শিখল।	রহিম গতকাল গান শিখলেন।
+honorific_00201	honorific	p3_hon	p3_ord		none	past	তিনি কাল সন্ধ্যায় গান শিখলেন।	তিনি কাল সন্ধ্যায় গান শিখল।
+honorific_00202	honorific	p3_hon	p3_ord		none	past	উনি গত সপ্তাহে গান শিখলেন।	উনি গত সপ্তাহে গান শিখল।
+honorific_00203	honorific	p3_ord	p3_hon		none	fut	সে আগামী সপ্তাহে গান শিখবে।	সে আগামী সপ্তাহে গান শিখবেন।
+honorific_00204	honorific	p3_ord	p3_hon		none	fut	ছেলেটি কিছুদিন পরে গান শিখবে।	ছেলেটি কিছুদিন পরে গান শিখবেন।
+honorific_00205	honorific	p3_ord	p3_hon		none	fut	মেয়েটি আগামীকাল গান শিখবে।	মেয়েটি আগামীকাল গান শিখবেন।
+honorific_00206	honorific	p3_ord	p3_hon		none	fut	আমার বন্ধু আগামীকাল গান শিখবে।	আমার বন্ধু আগামীকাল গান শিখবেন।
+honorific_00207	honorific	p3_ord	p3_hon		none	fut	রহিম আগামীকাল গান শিখবে।	রহিম আগামীকাল গান শিখবেন।
+honorific_00208	honorific	p3_hon	p3_ord		none	fut	তিনি আগামীকাল গান শিখবেন।	তিনি আগামীকাল গান শিখবে।
+honorific_00209	honorific	p3_hon	p3_ord		none	fut	উনি আগামী সপ্তাহে গান শিখবেন।	উনি আগামী সপ্তাহে গান শিখবে।

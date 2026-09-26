@@ -71,3 +71,17 @@ def test_attraction_bad_form_is_lure_form():
 def test_distance_buckets_present():
     seen = {r["distance"] for r in gen_sva()}
     assert {"none", "short", "medium", "long"} <= seen
+
+
+def test_released_probes_match_generator(tmp_path, monkeypatch):
+    from bangla_ssm.probes import generate
+
+    monkeypatch.setattr(sys, "argv", ["generate", "--out_dir", str(tmp_path)])
+    generate.main()
+    released = Path(__file__).resolve().parents[1] / "data" / "probes"
+    total = 0
+    for name in GENERATORS:
+        fresh = (tmp_path / f"{name}.tsv").read_bytes()
+        assert fresh == (released / f"{name}.tsv").read_bytes(), name
+        total += fresh.count(b"\n") - 1
+    assert total == 4790

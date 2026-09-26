@@ -1,0 +1,4 @@
+# Released artifacts must stay byte-identical to the Hugging Face copies
+# (CRLF TSV/CSV as written by Python's csv module), whatever core.autocrlf is.
+data/probes/*.tsv -text
+results/** -text

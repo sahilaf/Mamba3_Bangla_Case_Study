@@ -1,5 +1,9 @@
 # FINAL PLAN — State Tracking vs. Attention in Bangla: A Controlled Mamba-3 Case Study
 
+> **Historical document (July 2026).** Pre-experiment design notes, kept for transparency.
+> The paper supersedes it: the study ran 5 seeds (the plan assumed 1–2), and some expectations below did not
+> hold. See the [README](../README.md) for the final results.
+
 **Status: feasibility verified 2026-07-16 (see [FEASIBILITY.md](FEASIBILITY.md)). Repo is ready to execute.**
 **Target: MRL Workshop @ EMNLP 2026 — submission deadline Aug 10, 2026. Fallback: BLP Workshop (AACL).**
 
